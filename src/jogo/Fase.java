@@ -21,23 +21,25 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 /*** PROGRAMA DESENVOLVIDO POR DERICK TORVALDS.
-* DATA:06/02/2016
-* VERSAO: 1.2
+* DATA:11/02/2016
+* VERSAO: 1.4
 * CLASSE: FASE
 * OBJETIVO: CRIAR JANELA DO JOGO
 */
 public class Fase extends JPanel implements ActionListener {
 
     private Image fundo;
+    private Image Inicio;
     private Nave nave;
     private Timer timer;
 
     private boolean emJogo;
+    private boolean inicio;
     private boolean ganhoJogo;
 
     private List<Inimigo> inimigos;
 
-    private int[][] coordenadas = {{2380, 29}, {2600, 59}, {1380, 89},
+    private int[][] coordenadas = {{1600, 29}, {1499, 59}, {1380, 89},
     {780, 109}, {580, 139}, {880, 239}, {790, 259},
     {760, 50}, {790, 150}, {1980, 209}, {560, 45}, {510, 70},
     {930, 159}, {590, 80}, {530, 60}, {940, 59}, {990, 30},
@@ -55,8 +57,9 @@ public class Fase extends JPanel implements ActionListener {
         fundo = referencia.getImage();
         nave = new Nave();
 
-        emJogo = true;
+        emJogo = false;
         ganhoJogo = false;
+        inicio = true;
 
         inicializaInimigos();
 
@@ -101,19 +104,26 @@ public class Fase extends JPanel implements ActionListener {
         jogo.add(fechar);
         
         JMenu ajuda = new JMenu("<html>Aj<u>u</u>da</html>");
-        ajuda.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        });
+        
         JMenuItem sobre = new JMenuItem("<html>S<u>o</u>bre<html>");
         sobre.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null,"<html>Jogo Desenvolvido por <u>Derick Florencio</u>!</html>","Sobre",1);
+                JOptionPane.showMessageDialog(null,"<html>Space Greating<br> "
+                        +" Jogo Desenvolvido por <u>Derick Florencio</u>!</html>","Sobre",1);
+            }
+        });
+        JMenuItem coj = new JMenuItem("<html><u>C</u>omo Jogar...</html>");
+        coj.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+             JOptionPane.showMessageDialog(null, "<html>Para atirar tecle Insert<br>"
+                     + "Para mover a nave para cima tecle W<br>"
+                     + "Para mover a nave para baixo tecle S<br>"
+                     + "Para mover a nave para esquerda tecle A<br>"
+                     + "Para mover a nave para Direita tecle D<br></html>", "Como se Joga...", JOptionPane.QUESTION_MESSAGE);
             }
         });
         JMenuItem versao = new JMenuItem("<html><u>V</u>ersão</html>");
@@ -121,9 +131,15 @@ public class Fase extends JPanel implements ActionListener {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null,"Versão 1.2","Versão",1);
+                JOptionPane.showMessageDialog(null,"<html>VERSÃO 1.4<br>"
+                        + "<u>O que veio de novo:</u><br><br>"
+                        + "- Mudanças de controle <br>"
+                        + " <br>"
+                        + " <br>"
+                        + "<br></html>","Versão",1);
             }
         });
+        ajuda.add(coj);
         ajuda.add(versao);
         ajuda.add(sobre);
         
@@ -164,6 +180,8 @@ public class Fase extends JPanel implements ActionListener {
                 graficos.drawImage(m.getImagem(), m.getX(), m.getY(), this);
 
             }
+            
+            
 
             for (int i = 0; i < inimigos.size(); i++) {
 
@@ -186,6 +204,12 @@ public class Fase extends JPanel implements ActionListener {
             
             graficos.drawImage(ganhojogo.getImage(), 0,0,null);
             
+        }else if(inicio){
+            
+            ImageIcon bg_ = new ImageIcon(getClass().getResource("/jogo/res/Tela_Inicio.png"));
+            Inicio = bg_.getImage();
+            graficos.drawImage(Inicio, 0, 0, null);
+           
         }else{
            ImageIcon fimJogo = new ImageIcon(getClass().getResource("/jogo/res/game_over.png"));
 
@@ -245,12 +269,11 @@ public class Fase extends JPanel implements ActionListener {
 
             Inimigo tempInimigo = inimigos.get(i);
             formaInimigo = tempInimigo.getBounds();
-
+             
             if (formaNave.intersects(formaInimigo)) {
 
                 nave.setVisivel(false);
-                tempInimigo.setVisivel(false);
-
+             
                 emJogo = false;
 
             }
@@ -291,6 +314,9 @@ public class Fase extends JPanel implements ActionListener {
               if(emJogo == false){
                 emJogo = true;
                 ganhoJogo = false;
+                if(inicio == true){
+                    inicio = false;
+                }
                 nave = new Nave();
                 inicializaInimigos();
               }

@@ -3,9 +3,9 @@ package jogo;
 import javax.swing.JFrame;
 
 
-/*** PROGRAMA DESENVOLVIDO POR DERICK FLORENCIO.
-* DATA:06/02/2016
-* VERSAO: 1.2
+/*** PROGRAMA DESENVOLVIDO POR DERICK TORVALDS.
+* DATA:11/02/2016
+* VERSAO: 1.4
 * CLASSE: CONTAINERDEJANELAS
 * OBJETIVO: CRIAR JANELA PRINCIPAL
 */
@@ -23,7 +23,7 @@ public class ContainerDeJanelas extends JFrame {
         // SETAR A BARRAMENU COMO A BARRA DE MENU DA JANELA
         setJMenuBar(f.criarMenu());
         // SETAR O TITULO DO JOGO
-        setTitle("Space Greating");
+        setTitle("Space Greating 1.4");
         // SETAR O MODO DE FECHAR A JANELA
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // SETAR O TAMANHO DA JANELA

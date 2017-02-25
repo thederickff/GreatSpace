@@ -9,8 +9,8 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 /** PROGRAMA DESENVOLVIDO POR DERICK TORVALDS.
-* DATA:06/02/2016
-* VERSAO: 1.1
+* DATA:11/02/2016
+* VERSAO: 1.4
 * CLASSE: NAVE
 * OBJETIVO: CRIAR ATRIBUTOS DA NAVE
 */
@@ -99,23 +99,23 @@ public class Nave {
 
         int codigo = tecla.getKeyCode();
 
-        if (codigo == KeyEvent.VK_SPACE) {
+        if (codigo == KeyEvent.VK_INSERT) {
             atira();
         }
 
-        if (codigo == KeyEvent.VK_UP) {
+        if (codigo == KeyEvent.VK_W) {
             dy = -1;
         }
 
-        if (codigo == KeyEvent.VK_DOWN) {
+        if (codigo == KeyEvent.VK_S) {
             dy = 1;
         }
 
-        if (codigo == KeyEvent.VK_LEFT) {
+        if (codigo == KeyEvent.VK_A) {
             dx = -1;
         }
 
-        if (codigo == KeyEvent.VK_RIGHT) {
+        if (codigo == KeyEvent.VK_D) {
             dx = 1;
         }
 
@@ -125,19 +125,19 @@ public class Nave {
 
         int codigo = tecla.getKeyCode();
 
-        if (codigo == KeyEvent.VK_UP) {
+        if (codigo == KeyEvent.VK_W) {
             dy = 0;
         }
 
-        if (codigo == KeyEvent.VK_DOWN) {
+        if (codigo == KeyEvent.VK_S) {
             dy = 0;
         }
 
-        if (codigo == KeyEvent.VK_LEFT) {
+        if (codigo == KeyEvent.VK_A) {
             dx = 0;
         }
 
-        if (codigo == KeyEvent.VK_RIGHT) {
+        if (codigo == KeyEvent.VK_D ) {
             dx = 0;
         }
 
