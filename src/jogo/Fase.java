@@ -13,12 +13,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-/*** PROGRAMA DESENVOLVIDO POR DERICK TORVALDS
-* DATA:04/02/2016
-* VERSAO: 1.0
+/*** PROGRAMA DESENVOLVIDO POR DERICK TORVALDS.
+* DATA:06/02/2016
+* VERSAO: 1.2
 * CLASSE: FASE
 * OBJETIVO: CRIAR JANELA DO JOGO
 */
@@ -29,6 +33,7 @@ public class Fase extends JPanel implements ActionListener {
     private Timer timer;
 
     private boolean emJogo;
+    private boolean ganhoJogo;
 
     private List<Inimigo> inimigos;
 
@@ -51,12 +56,84 @@ public class Fase extends JPanel implements ActionListener {
         nave = new Nave();
 
         emJogo = true;
+        ganhoJogo = false;
 
         inicializaInimigos();
 
         timer = new Timer(5, this);
         timer.start();
 
+    }
+    public JMenuBar criarMenu(){
+        
+        JMenuBar menub = new JMenuBar();
+        
+        JMenu jogo = new JMenu("<html><u>J</u>ogo</html>");
+        
+        /*JMenuItem carregar  = new JMenuItem("<html><u>C</u>arregar Jogo</html>");
+        carregar.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Esta opção ainda não e possivel ainda", "Erro", 2);
+            }
+        });*/
+        
+      /*  JMenuItem salvar = new JMenuItem("<html><u>S</u>alvar Jogo</html>");
+        salvar.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               
+            }
+        });*/
+        JMenuItem fechar = new JMenuItem("<html><u>F</u>echar</html>");
+        fechar.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        
+        //arquivo.add(carregar);
+       // arquivo.add(salvar);
+        jogo.add(fechar);
+        
+        JMenu ajuda = new JMenu("<html>Aj<u>u</u>da</html>");
+        ajuda.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        });
+        JMenuItem sobre = new JMenuItem("<html>S<u>o</u>bre<html>");
+        sobre.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null,"<html>Jogo Desenvolvido por <u>Derick Florencio</u>!</html>","Sobre",1);
+            }
+        });
+        JMenuItem versao = new JMenuItem("<html><u>V</u>ersão</html>");
+        versao.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null,"Versão 1.2","Versão",1);
+            }
+        });
+        ajuda.add(versao);
+        ajuda.add(sobre);
+        
+        menub.add(jogo);
+        menub.add(ajuda);
+        
+        
+        
+        
+       return menub; 
     }
 
     public void inicializaInimigos() {
@@ -97,13 +174,22 @@ public class Fase extends JPanel implements ActionListener {
 
             graficos.setColor(Color.WHITE);
             graficos.drawString("INIMIGOS: " + inimigos.size(), 5, 15);
+            
+           
+                
+            
 
-        } else {
+        } else  if(ganhoJogo) {
 
-            ImageIcon fimJogo = new ImageIcon(getClass().getResource("/jogo/res/game_over.jpg"));
+            
+             ImageIcon ganhojogo = new ImageIcon(getClass().getResource("/jogo/res/jogo_vencido.png"));
+            
+            graficos.drawImage(ganhojogo.getImage(), 0,0,null);
+            
+        }else{
+           ImageIcon fimJogo = new ImageIcon(getClass().getResource("/jogo/res/game_over.png"));
 
             graficos.drawImage(fimJogo.getImage(), 0, 0, null);
-
         }
 
         g.dispose();
@@ -113,8 +199,9 @@ public class Fase extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent arg0) {
 
-        if (inimigos.size() == 0) {
+        if (inimigos.isEmpty()) {
             emJogo = false;
+            ganhoJogo = true;
         }
 
         List<Missel> misseis = nave.getMisseis();
@@ -201,9 +288,16 @@ public class Fase extends JPanel implements ActionListener {
         public void keyPressed(KeyEvent e) {
 
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+              if(emJogo == false){
                 emJogo = true;
+                ganhoJogo = false;
                 nave = new Nave();
                 inicializaInimigos();
+              }
+            }
+            if(e.getKeyCode() == KeyEvent.VK_ESCAPE){
+                emJogo = false;
+                
             }
 
             nave.keyPressed(e);
