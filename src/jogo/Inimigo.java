@@ -2,12 +2,13 @@ package jogo;
 
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 
-/** PROGRAMA DESENVOLVIDO POR DERICK TORVALDS.
-* DATA:11/02/2016
-* VERSAO: 1.4
+/** PROGRAMA DESENVOLVIDO POR DERICK FELIX.
+* DATA:12/02/2016
+* VERSAO: 2.0
 * CLASSE: INIMIGO
 * OBJETIVO: CRIAR OS ATRIBUTOS DOS INIMIGOS
 */
@@ -44,11 +45,24 @@ public class Inimigo {
 
         isVisivel = true;
     }
+    public int GerarPosX(){
+        
+
+      int aax = 456 + (int) (Math.random() *1600);
+        return aax;
+    }
+     public int GerarPosY(){
+          int aay = 10 + (int) (Math.random() * 320);         
+    
+
+        return aay;
+    }
 
     public void mexer() {
 
         if (this.x < 0) {
-            this.x = LARGURA_TELA;
+            this.x = GerarPosX();
+            this.y = GerarPosY();
         } else {
             this.x -= VELOCIDADE;
         }

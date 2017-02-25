@@ -20,53 +20,86 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-/*** PROGRAMA DESENVOLVIDO POR DERICK TORVALDS.
-* DATA:11/02/2016
-* VERSAO: 1.4
+/*** PROGRAMA DESENVOLVIDO POR DERICK FELIX.
+* DATA:12/02/2016
+* VERSAO: 2.0
 * CLASSE: FASE
 * OBJETIVO: CRIAR JANELA DO JOGO
 */
 public class Fase extends JPanel implements ActionListener {
 
+    private int recp ;
     private Image fundo;
     private Image Inicio;
-    private Nave nave;
+    private Inimigo ini = new Inimigo(100,200);
+    private Nave nave1;
+    private Nave nave2;
     private Timer timer;
 
+    private boolean p2 = false;
     private boolean emJogo;
     private boolean inicio;
     private boolean ganhoJogo;
 
     private List<Inimigo> inimigos;
-
-    private int[][] coordenadas = {{1600, 29}, {1499, 59}, {1380, 89},
-    {780, 109}, {580, 139}, {880, 239}, {790, 259},
-    {760, 50}, {790, 150}, {1980, 209}, {560, 45}, {510, 70},
-    {930, 159}, {590, 80}, {530, 60}, {940, 59}, {990, 30},
-    {920, 200}, {900, 259}, {660, 50}, {540, 90}, {810, 220},
-    {860, 20}, {740, 180}, {820, 128}, {490, 170}, {700, 30},
-    {920, 300}, {856, 328}, {456, 320}};
-
+    
+    
+    private int[][] coordenadas = {{ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()},
+    {ini.GerarPosX(), 50}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()},
+    {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()},
+    {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()},
+    {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()},
+    {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()},
+    {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()},
+    {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()},
+    {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()},
+    {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()},
+    {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()},
+    {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()},
+    {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()},
+    {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()},
+    {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()},
+    {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()},
+    {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()},
+    {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()},
+    {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()},
+    {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()},
+    {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()}, {ini.GerarPosX(), ini.GerarPosY()},
+    {ini.GerarPosX(), ini.GerarPosY()},
+    };
+   
     public Fase() {
 
+        
         setFocusable(true);
         setDoubleBuffered(true);
         addKeyListener(new TecladoAdapter());
 
+       
         ImageIcon referencia = new ImageIcon(getClass().getResource("/jogo/res/fundo.png"));
         fundo = referencia.getImage();
-        nave = new Nave();
-
+        nave1 = new Nave(100,100);
+   
+        nave2 = new Nave(100,200);
+        
+        
         emJogo = false;
         ganhoJogo = false;
         inicio = true;
-
+        verificarPlayer();
         inicializaInimigos();
-
+   
+         
         timer = new Timer(5, this);
         timer.start();
 
     }
+    public void verificarPlayer(){
+      recp = Integer.parseInt(JOptionPane.showInputDialog(null,"<html>Digite 1 para 1 Jogador<br>"
+                                       + "Digite 2 para 2 Jogadores</html>","Quantos Jogadores",1)); 
+        if(this.recp == 2){this.p2 =true;}
+
+}
     public JMenuBar criarMenu(){
         
         JMenuBar menub = new JMenuBar();
@@ -111,7 +144,7 @@ public class Fase extends JPanel implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(null,"<html>Space Greating<br> "
-                        +" Jogo Desenvolvido por <u>Derick Florencio</u>!</html>","Sobre",1);
+                        +"Desenvolvido por <u>Derick Florencio</u>!</html>","Sobre",1);
             }
         });
         JMenuItem coj = new JMenuItem("<html><u>C</u>omo Jogar...</html>");
@@ -119,11 +152,18 @@ public class Fase extends JPanel implements ActionListener {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-             JOptionPane.showMessageDialog(null, "<html>Para atirar tecle Insert<br>"
-                     + "Para mover a nave para cima tecle W<br>"
-                     + "Para mover a nave para baixo tecle S<br>"
-                     + "Para mover a nave para esquerda tecle A<br>"
-                     + "Para mover a nave para Direita tecle D<br></html>", "Como se Joga...", JOptionPane.QUESTION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "<html>"
+                     + "Para atirar com a nave 1 --------------- tecle G<br>"
+                     + "Para mover a nave 1 para cima ------ tecle W<br>"
+                     + "Para mover a nave 1 para baixo ----- tecle S<br>"
+                     + "Para mover a nave 1 para esquerda  tecle A<br>"
+                     + "Para mover a nave 1 para Direita --- tecle D<br><br>"
+                     + "Para atirar com a nave 2 --------------- tecle Insert<br>"
+                     + "Para mover a nave 2 para cima ------ tecle SETA UP<br>"
+                     + "Para mover a nave 2 para baixo ----- tecle SETA DOWN<br>"
+                     + "Para mover a nave 2 para esquerda  tecle SETA LEFT<br>"
+                     + "Para mover a nave 2 para Direita --- tecle SETA RIGHT<br>"
+                     + "</html>", "Como se Joga...", JOptionPane.QUESTION_MESSAGE);
             }
         });
         JMenuItem versao = new JMenuItem("<html><u>V</u>ersão</html>");
@@ -131,11 +171,14 @@ public class Fase extends JPanel implements ActionListener {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null,"<html>VERSÃO 1.4<br>"
+                JOptionPane.showMessageDialog(null,"<html>VERSÃO 2.0<br>"
                         + "<u>O que veio de novo:</u><br><br>"
-                        + "- Mudanças de controle <br>"
-                        + " <br>"
-                        + " <br>"
+                        + "- Agora você pode jogar de Dois!!! <br>"
+                        + "- Correção de bugs<br>"
+                        + "- Adicionado mais inimigos<br> "
+                        + "- Inimigos estão mais inteligentes<br>"
+                        + "- Inimigos não se repete<br>"
+                        + "- Inimigos não dão respawn no mesmo lugar<br>"
                         + "<br></html>","Versão",1);
             }
         });
@@ -147,9 +190,9 @@ public class Fase extends JPanel implements ActionListener {
         menub.add(ajuda);
         
         
-        
-        
+      
        return menub; 
+       
     }
 
     public void inicializaInimigos() {
@@ -167,16 +210,29 @@ public class Fase extends JPanel implements ActionListener {
 
         Graphics2D graficos = (Graphics2D) g;
         graficos.drawImage(fundo, 0, 0, null);
-
+          
+       
         if (emJogo) {
 
-            graficos.drawImage(nave.getImagem(), nave.getX(), nave.getY(), this);
+           if(nave1.isMorto() == false){
+               graficos.drawImage(nave1.getImagem(), nave1.getX(), nave1.getY(), this);
+           }
+           if(p2 == true){
+            if(nave2.isMorto() == false){ graficos.drawImage(nave2.getImagem(), nave2.getX(), nave2.getY(), this);}
+           }
 
-            List<Missel> misseis = nave.getMisseis();
+            List<Missel> misseis1 = nave1.getMisseis();
+            List<Missel> misseis2 = nave2.getMisseis();
+            
+            for (int i = 0; i < misseis1.size(); i++) {
 
-            for (int i = 0; i < misseis.size(); i++) {
+                Missel m = (Missel) misseis1.get(i);
+                graficos.drawImage(m.getImagem(), m.getX(), m.getY(), this);
 
-                Missel m = (Missel) misseis.get(i);
+            }
+            for (int i = 0; i < misseis2.size(); i++) {
+
+                Missel m = (Missel) misseis2.get(i);
                 graficos.drawImage(m.getImagem(), m.getX(), m.getY(), this);
 
             }
@@ -223,21 +279,35 @@ public class Fase extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent arg0) {
 
+       
         if (inimigos.isEmpty()) {
             emJogo = false;
             ganhoJogo = true;
         }
+        
 
-        List<Missel> misseis = nave.getMisseis();
+        List<Missel> misseis1 = nave1.getMisseis();
+        List<Missel> misseis2 = nave2.getMisseis();
 
-        for (int i = 0; i < misseis.size(); i++) {
+        for (int i = 0; i < misseis1.size(); i++) {
 
-            Missel m = (Missel) misseis.get(i);
+            Missel m = (Missel) misseis1.get(i);
 
             if (m.isVisivel()) {
                 m.mexer();
             } else {
-                misseis.remove(i);
+                misseis1.remove(i);
+            }
+
+        }
+        for (int i = 0; i < misseis2.size(); i++) {
+
+            Missel m = (Missel) misseis2.get(i);
+
+            if (m.isVisivel()) {
+                m.mexer();
+            } else {
+                misseis2.remove(i);
             }
 
         }
@@ -254,14 +324,25 @@ public class Fase extends JPanel implements ActionListener {
 
         }
 
-        nave.mexer();
+       
+
+        nave1.mexer();
+        nave2.mexer();
         checarColisoes();
+        if(p2 == true){
+        if(nave1.isMorto()  && nave2.isMorto()){
+            
+            emJogo = false;
+            
+        }
+        }
         repaint();
     }
 
     public void checarColisoes() {
 
-        Rectangle formaNave = nave.getBounds();
+        Rectangle formaNave1 = nave1.getBounds();
+        Rectangle formaNave2 = nave2.getBounds();
         Rectangle formaInimigo;
         Rectangle formaMissel;
 
@@ -270,21 +351,51 @@ public class Fase extends JPanel implements ActionListener {
             Inimigo tempInimigo = inimigos.get(i);
             formaInimigo = tempInimigo.getBounds();
              
-            if (formaNave.intersects(formaInimigo)) {
+            if (formaNave1.intersects(formaInimigo)) {
 
-                nave.setVisivel(false);
+                nave1.setVisivel(false);
+                
+                nave1.setMorto(true);
+                if(p2 == false){
+                    emJogo = false;
+                }
+
+            } if (formaNave2.intersects(formaInimigo)) {
+
+                nave2.setVisivel(false);
              
-                emJogo = false;
+               nave2.setMorto(true);
 
             }
 
         }
+       
+        List<Missel> misseis1 = nave1.getMisseis();
+        List<Missel> misseis2 = nave2.getMisseis();
 
-        List<Missel> misseis = nave.getMisseis();
+        for (int i = 0; i < misseis1.size(); i++) {
 
-        for (int i = 0; i < misseis.size(); i++) {
+            Missel tempMissel = misseis1.get(i);
+            formaMissel = tempMissel.getBounds();
 
-            Missel tempMissel = misseis.get(i);
+            for (int j = 0; j < inimigos.size(); j++) {
+
+                Inimigo tempInimigo = inimigos.get(j);
+                formaInimigo = tempInimigo.getBounds();
+
+                if (formaMissel.intersects(formaInimigo)) {
+
+                    tempInimigo.setVisivel(false);
+                    tempMissel.setVisivel(false);
+
+                }
+
+            }
+
+        }
+        for (int i = 0; i < misseis2.size(); i++) {
+
+            Missel tempMissel = misseis2.get(i);
             formaMissel = tempMissel.getBounds();
 
             for (int j = 0; j < inimigos.size(); j++) {
@@ -313,11 +424,15 @@ public class Fase extends JPanel implements ActionListener {
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
               if(emJogo == false){
                 emJogo = true;
+                nave1.setMorto(false);
+                nave2.setMorto(false);
                 ganhoJogo = false;
                 if(inicio == true){
                     inicio = false;
                 }
-                nave = new Nave();
+                
+                nave1 = new Nave(100,100);
+                nave2 = new Nave(100,200);
                 inicializaInimigos();
               }
             }
@@ -326,12 +441,18 @@ public class Fase extends JPanel implements ActionListener {
                 
             }
 
-            nave.keyPressed(e);
+            nave1.keyPressed1(e);
+            if(p2 == true){
+            nave2.keyPressed2(e);}
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            nave.keyReleased(e);
+            nave1.keyReleased1(e);
+            
+           if(p2 == true){
+               nave2.keyReleased2(e);
+           }
         }
 
     }
