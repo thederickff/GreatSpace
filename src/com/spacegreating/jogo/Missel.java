@@ -1,8 +1,7 @@
 package com.spacegreating.jogo;
 
+import com.spacegreating.jogo.proxy.ImagemProxy;
 import java.awt.Rectangle;
-
-import javax.swing.ImageIcon;
 
 /**
  * PROGRAMA DESENVOLVIDO POR DERICK FELIX.
@@ -15,18 +14,15 @@ public class Missel extends Desenho {
 
     private int x;
     private int y;
-
+    private static ImagemProxy imagemProxy;
     private static final int LARGURA_TELA = 500;
     private static final int VELOCIDADE = 3;
 
-    public Missel(int x, int y) {
-
-        this.x = x;
-        this.y = y;
-
-        ImageIcon referencia = new ImageIcon(getClass().getResource("/com/spacegreating/sprites/missel.png"));
-        this.setImagem(referencia.getImage());
-
+    public Missel() {
+        if(imagemProxy == null)
+            imagemProxy = new ImagemProxy("/com/spacegreating/sprites/missel.png"); 
+        
+        this.setImagem(imagemProxy.carregarImagem().getImage());
         this.setAltura(getImagem().getHeight(null));
         this.setLargura(getImagem().getWidth(null));
 
@@ -40,6 +36,14 @@ public class Missel extends Desenho {
             setVisivel(false);
         }
 
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 
     public int getX() {
