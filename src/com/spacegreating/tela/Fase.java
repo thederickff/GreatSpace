@@ -211,7 +211,7 @@ public class Fase extends JPanel implements ActionListener {
             }
             if (p2 == true) {
                 if (naveDois.isMorto() == false) {
-                    ImageIcon naveDois_ = new ImageIcon(getClass().getResource("/com/spacegreating/sprites/naveDois.gif"));
+                    ImageIcon naveDois_ = new ImageIcon(getClass().getResource("/com/spacegreating/sprites/nave2.gif"));
                     naveDois.setImagem(naveDois_.getImage());
                     graficos.drawImage(naveDois.getImagem(), naveDois.getX(), naveDois.getY(), this);
                 }
