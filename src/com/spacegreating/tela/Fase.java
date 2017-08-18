@@ -91,88 +91,54 @@ public class Fase extends JPanel implements ActionListener {
     }
 
     public JMenuBar criarMenu() {
-
+        // Create a new MenuBar
         JMenuBar menub = new JMenuBar();
-
-        JMenu jogo = new JMenu("<html><u>J</u>ogo</html>");
-
-        /*JMenuItem carregar  = new JMenuItem("<html><u>C</u>arregar Jogo</html>");
-         carregar.addActionListener(new ActionListener() {
-
-         @Override
-         public void actionPerformed(ActionEvent e) {
-         JOptionPane.showMessageDialog(null, "Esta opção ainda não e possivel ainda", "Erro", 2);
-         }
-         });*/
-        /*  JMenuItem salvar = new JMenuItem("<html><u>S</u>alvar Jogo</html>");
-         salvar.addActionListener(new ActionListener() {
-
-         @Override
-         public void actionPerformed(ActionEvent e) {
-               
-         }
-         });*/
-        JMenuItem fechar = new JMenuItem("<html><u>F</u>echar</html>");
-        fechar.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
+        // Create a new Menu
+        JMenu jogo = new JMenu("Jogo");
+        // Create a new Menu Item of Jogo menu
+        JMenuItem fechar = new JMenuItem("Fechar");
+        fechar.addActionListener((ActionEvent e) -> {
+            System.exit(0);
         });
-
-        //arquivo.add(carregar);
-        // arquivo.add(salvar);
+        // Add fechar menu item to the jogo menu
         jogo.add(fechar);
 
-        JMenu ajuda = new JMenu("<html>Aj<u>u</u>da</html>");
+        JMenu ajuda = new JMenu("Ajuda");
 
-        JMenuItem sobre = new JMenuItem("<html>S<u>o</u>bre<html>");
-        sobre.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "<html>Space Greating<br> "
-                        + "Desenvolvido por <u>Derick Florencio</u>!<br><br>"
-                        + "VERSÃO 2.1<br>"
-                        + "<u>O que veio de novo:</u><br><br>"
-                        + "- Modificado o sistema de players <br>"
-                        + "- Modicado o player 2<br>"
-                        + "- bala não atravessa player<br> "
-                        + "- player não atravessa player<br>"
-                        + "- corrigido o bug na hora de iniciar o jogo<br>"
-                        + "- corrigido o bug da bala quadrada<br>"
-                        + "<br></html>", "Sobre", 1);
-            }
+        JMenuItem sobre = new JMenuItem("Sobre");
+        sobre.addActionListener((ActionEvent e) -> {
+            JOptionPane.showMessageDialog(null, "<html><strong>Great Space</strong><br> "
+                    + "Developed by <strong>Derick Florencio</strong>!<br><br>"
+                    + "<strong>What's new:</strong><br><br>"
+                    + "- Bug Fixes <br>"
+                    + "- Changes in game controler <br>"
+                    + "<br></html>", "Sobre", 1);
         });
-        JMenuItem coj = new JMenuItem("<html><u>C</u>omo Jogar...</html>");
-        coj.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        JMenuItem coj = new JMenuItem("Como Jogar");
+        coj.addActionListener((ActionEvent e) -> {
                 JOptionPane.showMessageDialog(null, "<html>"
-                        + "Para atirar com a nave 1 --------------- tecle G<br>"
-                        + "Para mover a nave 1 para cima ------ tecle W<br>"
-                        + "Para mover a nave 1 para baixo ----- tecle S<br>"
-                        + "Para mover a nave 1 para esquerda  tecle A<br>"
-                        + "Para mover a nave 1 para Direita --- tecle D<br><br>"
-                        + "Para atirar com a nave 2 --------------- tecle Insert<br>"
-                        + "Para mover a nave 2 para cima ------ tecle SETA UP<br>"
-                        + "Para mover a nave 2 para baixo ----- tecle SETA DOWN<br>"
-                        + "Para mover a nave 2 para esquerda  tecle SETA LEFT<br>"
-                        + "Para mover a nave 2 para Direita --- tecle SETA RIGHT<br>"
-                        + "</html>", "Como se Joga...", JOptionPane.QUESTION_MESSAGE);
-            }
-        });
-       
+                        + "<strong>Nave 1</strong><br>"
+                        + "Atirar - <strong>G</strong><br>"
+                        + "Cima - <strong>W</strong><br>"
+                        + "Baixo - <strong>S</strong><br>"
+                        + "Esquerda - <strong>A</strong><br>"
+                        + "Direita - <strong>D</strong><br><br>"
+                        + "<strong>Nave 2</strong><br>"
+                        + "Atirar - <strong>Insert</strong><br>"
+                        + "Cima - <strong>SETA UP</strong><br>"
+                        + "Baixo - <strong>SETA DOWN</strong><br>"
+                        + "Esquerda - <strong>SETA LEFT</strong><br>"
+                        + "Direita - <strong>SETA RIGHT</strong><br>"
+                        + "</html>", "Como se Joga", JOptionPane.QUESTION_MESSAGE);
+            });
+        // Add coj and sobre menu item to ajuda menu
         ajuda.add(coj);
         ajuda.add(sobre);
-
+        // Add jogo and ajuda menu to the Menu Bar
         menub.add(jogo);
         menub.add(ajuda);
-
+        // Return the menu bar
         return menub;
-
     }
 
     private void inicializaInimigos() {

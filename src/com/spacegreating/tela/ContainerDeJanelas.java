@@ -23,7 +23,7 @@ public class ContainerDeJanelas extends JFrame {
         // SETAR A BARRAMENU COMO A BARRA DE MENU DA JANELA
         setJMenuBar(f.criarMenu());
         // SETAR O TITULO DO JOGO
-        setTitle("Space Greating 2.1");
+        setTitle("Great Space");
         // SETAR O MODO DE FECHAR A JANELA
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // SETAR O TAMANHO DA JANELA
@@ -32,14 +32,29 @@ public class ContainerDeJanelas extends JFrame {
         setLocationRelativeTo(null);
         // SETAR REDIMENSIONAMENTO DA TELA COMO FALSO 
         setResizable(false);
-        // SETAR A VISIBILIDADE DA TELA COMO VERDADEIRO
-        setVisible(true);
-
+      
     }
 //         METODO PRINCIPAL
     public static void main(String[] args) {
-        
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(ContainerDeJanelas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new ContainerDeJanelas().setVisible(true);
+            }
+        });
         // INSTANCIAR A CLASSE QUE CONTEM A JANELA NO CONSTRUTOR
-        ContainerDeJanelas cdj = new ContainerDeJanelas();
+        
     }
 }
