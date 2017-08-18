@@ -1,12 +1,10 @@
 package com.spacegreating.jogo;
 
-import com.spacegreating.tela.Fase;
+import com.spacegreating.jogo.proxy.ImagemProxy;
 import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.ImageIcon;
 
 /**
  * PROGRAMA DESENVOLVIDO POR DERICK FELIX.
@@ -20,36 +18,31 @@ public class Nave extends Desenho {
     private int x, y;
     private int dx, dy;
     private boolean morto;
-     ImageIcon referencia;
+    private static ImagemProxy imagemProxy;
+    private Missel missel;
+    
+    private Controle controle;
 
     private List<Missel> misseis;
 
-    public Nave(int X, int Y) {
+    public Nave() {
+        if(imagemProxy == null)
+            imagemProxy = new ImagemProxy("/com/spacegreating/sprites/nave.gif"); 
         
-        
-        referencia = new ImageIcon(getClass().getResource("/com/spacegreating/sprites/nave.gif"));
-        
-           
-            
-        this.setImagem(referencia.getImage());
+        this.setImagem(imagemProxy.carregarImagem().getImage());
 
         this.setAltura(getImagem().getHeight(null));
         this.setLargura(getImagem().getWidth(null));
 
         misseis = new ArrayList<Missel>();
-
-        this.x = X;
-        this.y = Y;
-
+        missel = new Missel();
     }
 
     public void mexer() {
-
         x += dx; // 1 e 462
         y += dy; // 1 e 340
 
         colisaoJanela();
-
     }
 
     public void colisaoJanela() {
@@ -80,7 +73,6 @@ public class Nave extends Desenho {
     }
 
     public void setX(int x) {
-
         this.x = x;
     }
     public void setDx(int d){
@@ -100,121 +92,31 @@ public class Nave extends Desenho {
     }
 
     public boolean isMorto() {
-
         return morto;
     }
 
     public void setMorto(boolean morto) {
-
         this.morto = morto;
     }
 
     public void atira() {
-        this.misseis.add(new Missel(x + getLargura(), y + getAltura() / 2));
+        Missel mis = (Missel) missel.clone();
+        mis.setX(x + getLargura());
+        mis.setY(y + getAltura()/2);
+        
+        this.misseis.add(mis);
     }
 
     public Rectangle getBounds() {
         return new Rectangle(x, y, getLargura(), getAltura());
     }
 
-    public void keyPressed1(KeyEvent tecla) {
-        int codigo = tecla.getKeyCode();
-        if (morto != true) {
-            if (codigo == KeyEvent.VK_G) {
-
-                atira();
-
-            }
-            if (codigo == KeyEvent.VK_W) {
-                dy = -1;
-            }
-
-            if (codigo == KeyEvent.VK_S) {
-                dy = 1;
-            }
-
-            if (codigo == KeyEvent.VK_A) {
-                dx = -1;
-            }
-
-            if (codigo == KeyEvent.VK_D) {
-                dx = 1;
-            }
-        }
+    public Controle getControle() {
+        return controle;
     }
 
-    public void keyPressed2(KeyEvent tecla) {
-
-        int codigo = tecla.getKeyCode();
-        if (morto != true) {
-            if (codigo == KeyEvent.VK_INSERT) {
-                atira();
-            }
-
-            if (codigo == KeyEvent.VK_UP) {
-                dy = -1;
-            }
-
-            if (codigo == KeyEvent.VK_DOWN) {
-                dy = 1;
-            }
-
-            if (codigo == KeyEvent.VK_LEFT) {
-                dx = -1;
-            }
-
-            if (codigo == KeyEvent.VK_RIGHT) {
-                dx = 1;
-            }
-        }
+    public void setControle(Controle controle) {
+        this.controle = controle;
     }
-
-    public void keyReleased1(KeyEvent tecla) {
-
-        int codigo = tecla.getKeyCode();
-
-        if (morto != true) {
-            if (codigo == KeyEvent.VK_W) {
-                dy = 0;
-            }
-
-            if (codigo == KeyEvent.VK_S) {
-                dy = 0;
-            }
-
-            if (codigo == KeyEvent.VK_A) {
-                dx = 0;
-            }
-
-            if (codigo == KeyEvent.VK_D) {
-                dx = 0;
-            }
-        }
-
-    }
-
-    public void keyReleased2(KeyEvent tecla) {
-
-        int codigo = tecla.getKeyCode();
-
-        if (morto != true) {
-         
-            if (codigo == KeyEvent.VK_UP) {
-                dy = 0;
-            }
-
-            if (codigo == KeyEvent.VK_DOWN) {
-                dy = 0;
-            }
-
-            if (codigo == KeyEvent.VK_LEFT) {
-                dx = 0;
-            }
-
-            if (codigo == KeyEvent.VK_RIGHT) {
-                dx = 0;
-            }
-        }
-    }
-
+    
 }
