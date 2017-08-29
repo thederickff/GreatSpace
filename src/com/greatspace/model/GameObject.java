@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.spacegreating.jogo;
+package com.greatspace.model;
 
 import java.awt.Image;
 
@@ -14,7 +14,7 @@ import java.awt.Image;
  * CLASSE: DESENHO 
  * OBJETIVO: CRIA OS ATRIBUTOS DE TODAS AS CLASSES
  */
-public abstract class Desenho implements Cloneable {
+public abstract class GameObject implements Cloneable {
 
     private Image imagem;
     private int x;

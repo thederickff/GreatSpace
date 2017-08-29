@@ -1,41 +1,41 @@
-package com.spacegreating.jogo;
+package com.greatspace.model;
 
-import com.spacegreating.jogo.proxy.ImagemProxy;
+import com.greatspace.controller.Controller;
+import com.greatspace.proxy.ProxyImage;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
 
 /**
- * PROGRAMA DESENVOLVIDO POR DERICK FELIX.
- * DATA:13/02/2016 
- * VERSAO: 2.1
- * CLASSE: NAVE 
- * OBJETIVO: CRIAR ATRIBUTOS DA NAVE
+ * @author: Derick Felix
+ * @Data: 02/13/2016
+ * @Release: 2.1
+ * @Class: Player
  */
-public class Nave extends Desenho {
+public class Player extends GameObject {
 
     private int x, y;
     private int dx, dy;
     private boolean morto;
-    private static ImagemProxy imagemProxy;
-    private Missel missel;
+    private static ProxyImage imagemProxy;
+    private Bullet missel;
     
-    private Controle controle;
+    private Controller controle;
 
-    private List<Missel> misseis;
+    private List<Bullet> misseis;
 
-    public Nave() {
+    public Player() {
         if(imagemProxy == null)
-            imagemProxy = new ImagemProxy("/com/spacegreating/sprites/nave.gif"); 
+            imagemProxy = new ProxyImage("/com/greatspace/sprites/ship.gif"); 
         
-        this.setImagem(imagemProxy.carregarImagem().getImage());
+        this.setImagem(imagemProxy.loadImage().getImage());
 
         this.setAltura(getImagem().getHeight(null));
         this.setLargura(getImagem().getWidth(null));
 
-        misseis = new ArrayList<Missel>();
-        missel = new Missel();
+        misseis = new ArrayList<Bullet>();
+        missel = new Bullet();
     }
 
     public void mexer() {
@@ -64,7 +64,7 @@ public class Nave extends Desenho {
         }
     }
 
-    public List<Missel> getMisseis() {
+    public List<Bullet> getMisseis() {
         return misseis;
     }
 
@@ -100,7 +100,7 @@ public class Nave extends Desenho {
     }
 
     public void atira() {
-        Missel mis = (Missel) missel.clone();
+        Bullet mis = (Bullet) missel.clone();
         mis.setX(x + getLargura());
         mis.setY(y + getAltura()/2);
         
@@ -111,11 +111,11 @@ public class Nave extends Desenho {
         return new Rectangle(x, y, getLargura(), getAltura());
     }
 
-    public Controle getControle() {
+    public Controller getControle() {
         return controle;
     }
 
-    public void setControle(Controle controle) {
+    public void setControle(Controller controle) {
         this.controle = controle;
     }
     

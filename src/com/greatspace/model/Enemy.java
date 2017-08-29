@@ -1,4 +1,4 @@
-package com.spacegreating.jogo;
+package com.greatspace.model;
 
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -11,7 +11,7 @@ import javax.swing.ImageIcon;
  * CLASSE: INIMIGO
  * OBJETIVO: CRIAR OS ATRIBUTOS DOS INIMIGOS
  */
-public class Inimigo extends Desenho {
+public class Enemy extends GameObject {
 
     private int x;
     private int y;
@@ -19,7 +19,7 @@ public class Inimigo extends Desenho {
     private static final int LARGURA_TELA = 500;
     private static final int VELOCIDADE = 1;
 
-    public Inimigo() {
+    public Enemy() {
     }
 
     public static int GerarPosX() {

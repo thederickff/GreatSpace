@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.spacegreating.jogo.interfaces;
+package com.greatspace.interfaces;
 
 import javax.swing.ImageIcon;
 
@@ -11,6 +11,6 @@ import javax.swing.ImageIcon;
  *
  * @author Dayvson
  */
-public interface IImagem {
-    public ImageIcon carregarImagem();
+public interface IImage {
+    public ImageIcon loadImage();
 }

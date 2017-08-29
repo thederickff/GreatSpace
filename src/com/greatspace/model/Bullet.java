@@ -1,6 +1,6 @@
-package com.spacegreating.jogo;
+package com.greatspace.model;
 
-import com.spacegreating.jogo.proxy.ImagemProxy;
+import com.greatspace.proxy.ProxyImage;
 import java.awt.Rectangle;
 
 /**
@@ -10,19 +10,19 @@ import java.awt.Rectangle;
  * CLASSE: MISSEL 
  * OBJETIVO: CRIAR OS ATRIBUTOS DOS MISSEIS
  */
-public class Missel extends Desenho {
+public class Bullet extends GameObject {
 
     private int x;
     private int y;
-    private static ImagemProxy imagemProxy;
+    private static ProxyImage imagemProxy;
     private static final int LARGURA_TELA = 500;
     private static final int VELOCIDADE = 3;
 
-    public Missel() {
+    public Bullet() {
         if(imagemProxy == null)
-            imagemProxy = new ImagemProxy("/com/spacegreating/sprites/missel.png"); 
+            imagemProxy = new ProxyImage("/com/greatspace/sprites/bullet.png"); 
         
-        this.setImagem(imagemProxy.carregarImagem().getImage());
+        this.setImagem(imagemProxy.loadImage().getImage());
         this.setAltura(getImagem().getHeight(null));
         this.setLargura(getImagem().getWidth(null));
 

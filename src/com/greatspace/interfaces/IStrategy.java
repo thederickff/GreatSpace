@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.spacegreating.jogo.interfaces;
+package com.greatspace.interfaces;
 
-import com.spacegreating.jogo.Nave;
+import com.greatspace.model.Player;
 import java.awt.event.KeyEvent;
 
 /**
@@ -13,6 +13,6 @@ import java.awt.event.KeyEvent;
  * @author Dayvson
  */
 public interface IStrategy {
-    public void controle(Nave nave, KeyEvent tecla);
-    public void controleReleased(Nave nave, KeyEvent tecla);
+    public void keyPressed(Player player, KeyEvent key);
+    public void keyReleased(Player player, KeyEvent key);
 }

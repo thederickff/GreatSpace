@@ -1,10 +1,10 @@
-package com.spacegreating.tela;
+package com.greatspace.view;
 
-import com.spacegreating.jogo.Controle;
-import com.spacegreating.jogo.Missel;
-import com.spacegreating.jogo.Inimigo;
-import com.spacegreating.jogo.Nave;
-import com.spacegreating.jogo.proxy.ImagemProxy;
+import com.greatspace.controller.Controller;
+import com.greatspace.model.Bullet;
+import com.greatspace.model.Enemy;
+import com.greatspace.model.Player;
+import com.greatspace.proxy.ProxyImage;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -26,137 +26,142 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 /**
- * * PROGRAMA DESENVOLVIDO POR DERICK FELIX.
- * DATA:13/02/2016 
- * VERSAO: 2.1
- * CLASSE: FASE 
- * OBJETIVO: CRIAR JANELA DO JOGO
+ * @author: Derick Felix
+ * @Data: 02/13/2016
+ * @Release: 2.1
+ * @Class: Game
+ * @Objective: Control the game
  */
-public class Fase extends JPanel implements ActionListener {
+public class Game extends JPanel implements ActionListener {
 
     private int recp;
     private final Image fundo;
     private Image Inicio;
-    private final Nave nave;
+    private final Player nave;
     private final Timer timer;
-    private final Nave naveUm;
-    private final Nave naveDois;
+    private final Player naveUm;
+    private final Player naveDois;
 
     private boolean p2 = false;
     private boolean emJogo;
     private boolean inicio;
     private boolean ganhoJogo;
 
-    private List<Inimigo> inimigos;
+    private List<Enemy> inimigos;
 
-    public Fase() {
-        
-        this.nave = new Nave();
-        
+    public Game() {
+
+        this.nave = new Player();
+
         setFocusable(true);
         setDoubleBuffered(true);
         addKeyListener(new TecladoAdapter());
 
-        ImageIcon referencia = new ImageIcon(getClass().getResource("/com/spacegreating/sprites/fundo.png"));
+        ImageIcon referencia = new ImageIcon(getClass().getResource("/com/greatspace/sprites/background.png"));
         fundo = referencia.getImage();
-        
-        naveUm = (Nave) nave.clone();
+
+        naveUm = (Player) nave.clone();
         naveUm.setX(100);
         naveUm.setY(100);
-        naveUm.setControle(Controle.PLAYER_1);
-        
-        naveDois = (Nave) nave.clone();
+        naveUm.setControle(Controller.PLAYER_1);
+
+        naveDois = (Player) nave.clone();
         naveDois.setX(100);
         naveDois.setY(200);
-        naveDois.setControle(Controle.PLAYER_2);
-        
+        naveDois.setControle(Controller.PLAYER_2);
+
         emJogo = false;
         ganhoJogo = false;
         inicio = true;
-       
-        inicializaInimigos();
+
+        initEnemy();
 
         timer = new Timer(5, this);
         timer.start();
     }
 
-    public void verificarPlayer() {
-        recp = Integer.parseInt(JOptionPane.showInputDialog(null, "<html>Digite 1 para 1 Jogador<br>"
-                + "Digite 2 para 2 Jogadores</html>", "Quantos Jogadores", 1));
-        
-        if(recp == 2){
-            p2 = true;
+    public void checkPlayer() {
+        try {
+            recp = Integer.parseInt(JOptionPane.showInputDialog(null, "<html>Type 1 to Singleplayer<br>"
+                    + "Type 2 to Multiplayer</html>", "Game type", 1));
+
+            if (recp == 2) {
+                p2 = true;
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Error: " + e);
+            System.exit(0);
         }
-        
+
     }
 
     public JMenuBar criarMenu() {
         // Create a new MenuBar
         JMenuBar menub = new JMenuBar();
         // Create a new Menu
-        JMenu jogo = new JMenu("Jogo");
+        JMenu game = new JMenu("Game");
         // Create a new Menu Item of Jogo menu
-        JMenuItem fechar = new JMenuItem("Fechar");
-        fechar.addActionListener((ActionEvent e) -> {
+        JMenuItem close = new JMenuItem("Close");
+        close.addActionListener((ActionEvent e) -> {
             System.exit(0);
         });
         // Add fechar menu item to the jogo menu
-        jogo.add(fechar);
+        game.add(close);
 
-        JMenu ajuda = new JMenu("Ajuda");
+        JMenu help = new JMenu("Help");
 
-        JMenuItem sobre = new JMenuItem("Sobre");
-        sobre.addActionListener((ActionEvent e) -> {
+        JMenuItem about = new JMenuItem("About");
+        about.addActionListener((ActionEvent e) -> {
             JOptionPane.showMessageDialog(null, "<html><strong>Great Space</strong><br> "
-                    + "Developed by <strong>Derick Florencio</strong>!<br><br>"
+                    + "Developed by <strong>Derick Felix</strong>!<br><br>"
                     + "<strong>What's new:</strong><br><br>"
                     + "- Bug Fixes <br>"
                     + "- Changes in game controler <br>"
-                    + "<br></html>", "Sobre", 1);
+                    + "<br></html>", "About", 1);
         });
-        JMenuItem coj = new JMenuItem("Como Jogar");
-        coj.addActionListener((ActionEvent e) -> {
-                JOptionPane.showMessageDialog(null, "<html>"
-                        + "<strong>Nave 1</strong><br>"
-                        + "Atirar - <strong>G</strong><br>"
-                        + "Cima - <strong>W</strong><br>"
-                        + "Baixo - <strong>S</strong><br>"
-                        + "Esquerda - <strong>A</strong><br>"
-                        + "Direita - <strong>D</strong><br><br>"
-                        + "<strong>Nave 2</strong><br>"
-                        + "Atirar - <strong>Insert</strong><br>"
-                        + "Cima - <strong>SETA UP</strong><br>"
-                        + "Baixo - <strong>SETA DOWN</strong><br>"
-                        + "Esquerda - <strong>SETA LEFT</strong><br>"
-                        + "Direita - <strong>SETA RIGHT</strong><br>"
-                        + "</html>", "Como se Joga", JOptionPane.QUESTION_MESSAGE);
-            });
+        JMenuItem htp = new JMenuItem("How to Play");
+        htp.addActionListener((ActionEvent e) -> {
+            JOptionPane.showMessageDialog(null, "<html>"
+                    + "<strong>Player 1</strong><br>"
+                    + "Fire - <strong>G</strong><br>"
+                    + "Up - <strong>W</strong><br>"
+                    + "Down - <strong>S</strong><br>"
+                    + "Left - <strong>A</strong><br>"
+                    + "Right - <strong>D</strong><br><br>"
+                    + "<strong>Player 2</strong><br>"
+                    + "Fire - <strong>Insert</strong><br>"
+                    + "Up - <strong>UP ARROW</strong><br>"
+                    + "Down - <strong>DOWN ARROW</strong><br>"
+                    + "Left - <strong>LEFT ARROW</strong><br>"
+                    + "Right - <strong>RIGHT ARROW</strong><br>"
+                    + "</html>", "How to play", JOptionPane.QUESTION_MESSAGE);
+        });
         // Add coj and sobre menu item to ajuda menu
-        ajuda.add(coj);
-        ajuda.add(sobre);
+        help.add(htp);
+        help.add(about);
         // Add jogo and ajuda menu to the Menu Bar
-        menub.add(jogo);
-        menub.add(ajuda);
+        menub.add(game);
+        menub.add(help);
         // Return the menu bar
         return menub;
     }
 
-    private void inicializaInimigos() {
+    private void initEnemy() {
         inimigos = new ArrayList<>();
-        Inimigo inimigo = new Inimigo();
-        ImagemProxy imagemInimigoUm = new ImagemProxy("/com/spacegreating/sprites/inimigo_1.gif");
-        ImagemProxy imagemInimigoDois = new ImagemProxy("/com/spacegreating/sprites/inimigo_2.gif");
+        Enemy inimigo = new Enemy();
+        ProxyImage imagemInimigoUm = new ProxyImage("/com/greatspace/sprites/enemy_1.gif");
+        ProxyImage imagemInimigoDois = new ProxyImage("/com/greatspace/sprites/enemy_2.gif");
         for (int i = 0; i < 100; i++) {
-            Inimigo ini = (Inimigo) inimigo.clone();
-            ini.setX(Inimigo.GerarPosX());
-            ini.setY(Inimigo.GerarPosY());
-            
+            Enemy ini = (Enemy) inimigo.clone();
+            ini.setX(Enemy.GerarPosX());
+            ini.setY(Enemy.GerarPosY());
+
             if (i % 3 == 0) {
-                ini.setImagem(imagemInimigoDois.carregarImagem().getImage());
-            }else{
-                ini.setImagem(imagemInimigoUm.carregarImagem().getImage());
+                ini.setImagem(imagemInimigoDois.loadImage().getImage());
+            } else {
+                ini.setImagem(imagemInimigoUm.loadImage().getImage());
             }
-            
+
             ini.setAltura(ini.getImagem().getHeight(null));
             ini.setLargura(ini.getImagem().getWidth(null));
 
@@ -165,6 +170,7 @@ public class Fase extends JPanel implements ActionListener {
         }
     }
 
+    @Override
     public void paint(Graphics g) {
 
         Graphics2D graficos = (Graphics2D) g;
@@ -177,52 +183,52 @@ public class Fase extends JPanel implements ActionListener {
             }
             if (p2 == true) {
                 if (naveDois.isMorto() == false) {
-                    ImageIcon naveDois_ = new ImageIcon(getClass().getResource("/com/spacegreating/sprites/nave2.gif"));
+                    ImageIcon naveDois_ = new ImageIcon(getClass().getResource("/com/greatspace/sprites/ship2.gif"));
                     naveDois.setImagem(naveDois_.getImage());
                     graficos.drawImage(naveDois.getImagem(), naveDois.getX(), naveDois.getY(), this);
                 }
             }
 
-            List<Missel> misseis1 = naveUm.getMisseis();
-            List<Missel> misseis2 = naveDois.getMisseis();
+            List<Bullet> misseis1 = naveUm.getMisseis();
+            List<Bullet> misseis2 = naveDois.getMisseis();
 
             for (int i = 0; i < misseis1.size(); i++) {
 
-                Missel m = (Missel) misseis1.get(i);
+                Bullet m = (Bullet) misseis1.get(i);
                 graficos.drawImage(m.getImagem(), m.getX(), m.getY(), this);
 
             }
             for (int i = 0; i < misseis2.size(); i++) {
 
-                Missel m = (Missel) misseis2.get(i);
+                Bullet m = (Bullet) misseis2.get(i);
                 graficos.drawImage(m.getImagem(), m.getX(), m.getY(), this);
 
             }
 
             for (int i = 0; i < inimigos.size(); i++) {
 
-                Inimigo in = inimigos.get(i);
+                Enemy in = inimigos.get(i);
                 graficos.drawImage(in.getImagem(), in.getX(), in.getY(), this);
 
             }
 
             graficos.setColor(Color.WHITE);
-            graficos.drawString("INIMIGOS: " + inimigos.size(), 5, 15);
+            graficos.drawString("Enemies: " + inimigos.size(), 5, 15);
 
         } else if (ganhoJogo) {
 
-            ImageIcon ganhojogo = new ImageIcon(getClass().getResource("/com/spacegreating/sprites/jogo_vencido.png"));
+            ImageIcon ganhojogo = new ImageIcon(getClass().getResource("/com/greatspace/sprites/game_won.png"));
 
             graficos.drawImage(ganhojogo.getImage(), 0, 0, null);
 
         } else if (inicio) {
 
-            ImageIcon bg_ = new ImageIcon(getClass().getResource("/com/spacegreating/sprites/Tela_Inicio.png"));
+            ImageIcon bg_ = new ImageIcon(getClass().getResource("/com/greatspace/sprites/main_menu.png"));
             Inicio = bg_.getImage();
             graficos.drawImage(Inicio, 0, 0, null);
 
         } else {
-            ImageIcon fimJogo = new ImageIcon(getClass().getResource("/com/spacegreating/sprites/game_over.png"));
+            ImageIcon fimJogo = new ImageIcon(getClass().getResource("/com/greatspace/sprites/game_over.png"));
 
             graficos.drawImage(fimJogo.getImage(), 0, 0, null);
         }
@@ -239,12 +245,12 @@ public class Fase extends JPanel implements ActionListener {
             ganhoJogo = true;
         }
 
-        List<Missel> misseis1 = naveUm.getMisseis();
-        List<Missel> misseis2 = naveDois.getMisseis();
+        List<Bullet> misseis1 = naveUm.getMisseis();
+        List<Bullet> misseis2 = naveDois.getMisseis();
 
         for (int i = 0; i < misseis1.size(); i++) {
 
-            Missel m = (Missel) misseis1.get(i);
+            Bullet m = (Bullet) misseis1.get(i);
 
             if (m.isVisivel()) {
                 m.mexer();
@@ -255,7 +261,7 @@ public class Fase extends JPanel implements ActionListener {
         }
         for (int i = 0; i < misseis2.size(); i++) {
 
-            Missel m = (Missel) misseis2.get(i);
+            Bullet m = (Bullet) misseis2.get(i);
 
             if (m.isVisivel()) {
                 m.mexer();
@@ -267,7 +273,7 @@ public class Fase extends JPanel implements ActionListener {
 
         for (int i = 0; i < inimigos.size(); i++) {
 
-            Inimigo in = inimigos.get(i);
+            Enemy in = inimigos.get(i);
 
             if (in.isVisivel()) {
                 in.mexer();
@@ -299,7 +305,7 @@ public class Fase extends JPanel implements ActionListener {
 
         for (int i = 0; i < inimigos.size(); i++) {
 
-            Inimigo tempInimigo = inimigos.get(i);
+            Enemy tempInimigo = inimigos.get(i);
             formaInimigo = tempInimigo.getBounds();
 
             if (formaNave1.intersects(formaInimigo)) {
@@ -313,12 +319,12 @@ public class Fase extends JPanel implements ActionListener {
                 naveDois.setVisivel(false);
                 naveDois.setMorto(true);
             }
-            if(naveUm.isMorto() == false && naveDois.isMorto() == false){
-                if (formaNave1.intersects(formaNave2)){
+            if (naveUm.isMorto() == false && naveDois.isMorto() == false) {
+                if (formaNave1.intersects(formaNave2)) {
                     naveUm.setDx(0);
                     naveUm.setDy(0);
                 }
-                if (formaNave2.intersects(formaNave1)){
+                if (formaNave2.intersects(formaNave1)) {
                     naveDois.setDx(0);
                     naveDois.setDy(0);
                 }
@@ -326,17 +332,17 @@ public class Fase extends JPanel implements ActionListener {
 
         }
 
-        List<Missel> misseis1 = naveUm.getMisseis();
-        List<Missel> misseis2 = naveDois.getMisseis();
+        List<Bullet> misseis1 = naveUm.getMisseis();
+        List<Bullet> misseis2 = naveDois.getMisseis();
 
         for (int i = 0; i < misseis1.size(); i++) {
 
-            Missel tempMissel = misseis1.get(i);
+            Bullet tempMissel = misseis1.get(i);
             formaMissel = tempMissel.getBounds();
 
             for (int j = 0; j < inimigos.size(); j++) {
 
-                Inimigo tempInimigo = inimigos.get(j);
+                Enemy tempInimigo = inimigos.get(j);
                 formaInimigo = tempInimigo.getBounds();
 
                 if (formaMissel.intersects(formaInimigo)) {
@@ -345,8 +351,8 @@ public class Fase extends JPanel implements ActionListener {
                     tempMissel.setVisivel(false);
 
                 }
-                if(formaMissel.intersects(formaNave2)){
-                    
+                if (formaMissel.intersects(formaNave2)) {
+
                     tempMissel.setVisivel(false);
                 }
 
@@ -355,12 +361,12 @@ public class Fase extends JPanel implements ActionListener {
         }
         for (int i = 0; i < misseis2.size(); i++) {
 
-            Missel tempMissel = misseis2.get(i);
+            Bullet tempMissel = misseis2.get(i);
             formaMissel = tempMissel.getBounds();
 
             for (int j = 0; j < inimigos.size(); j++) {
 
-                Inimigo tempInimigo = inimigos.get(j);
+                Enemy tempInimigo = inimigos.get(j);
                 formaInimigo = tempInimigo.getBounds();
 
                 if (formaMissel.intersects(formaInimigo)) {
@@ -369,8 +375,8 @@ public class Fase extends JPanel implements ActionListener {
                     tempMissel.setVisivel(false);
 
                 }
-                  if(formaMissel.intersects(formaNave1)){
-                    
+                if (formaMissel.intersects(formaNave1)) {
+
                     tempMissel.setVisivel(false);
                 }
 
@@ -378,12 +384,13 @@ public class Fase extends JPanel implements ActionListener {
 
         }
     }
-    
-    public boolean getP2(){
+
+    public boolean getP2() {
         return this.p2;
     }
 
     private class TecladoAdapter extends KeyAdapter {
+
         @Override
         public void keyPressed(KeyEvent e) {
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -395,30 +402,32 @@ public class Fase extends JPanel implements ActionListener {
                     if (inicio == true) {
                         inicio = false;
                     }
-                    
+
                     naveUm.setX(100);
                     naveUm.setY(100);
-                    
+
                     naveDois.setX(100);
                     naveDois.setY(200);
-                    
-                    inicializaInimigos();
+
+                    initEnemy();
                 }
             }
             if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                 emJogo = false;
             }
 
-            naveUm.getControle().controle(naveUm, e);
-            if(p2)
-                naveDois.getControle().controle(naveDois, e);
+            naveUm.getControle().keyPressed(naveUm, e);
+            if (p2) {
+                naveDois.getControle().keyPressed(naveDois, e);
+            }
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            naveUm.getControle().controle(naveUm, e);
-            if(p2)
-                naveDois.getControle().controle(naveDois, e);
+            naveUm.getControle().keyPressed(naveUm, e);
+            if (p2) {
+                naveDois.getControle().keyPressed(naveDois, e);
+            }
         }
 
     }
