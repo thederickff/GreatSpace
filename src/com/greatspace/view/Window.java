@@ -1,5 +1,9 @@
 package com.greatspace.view;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 /**
@@ -22,15 +26,20 @@ public class Window {
         frame.setSize(500, 420);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
+
+        try {
+            URL url = getClass().getResource("../sprites/gsicon.png");
+            BufferedImage image = ImageIO.read(url);
+            frame.setIconImage(image);
+        } catch (IOException e) {
+            System.out.println("ImageError: " + e);
+        }
         frame.setVisible(true);
     }
 
     public static void main(String[] args) {
-        /* Set the Nimbus look and feel */
+        /* Set the System look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
@@ -38,11 +47,8 @@ public class Window {
         }
         //</editor-fold>
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                Window window = new Window();
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            Window window = new Window();
         });
 
     }
