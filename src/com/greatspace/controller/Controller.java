@@ -7,32 +7,45 @@ package com.greatspace.controller;
 
 import com.greatspace.interfaces.IStrategy;
 import com.greatspace.model.Player;
+
 import java.awt.event.KeyEvent;
+
+import static com.greatspace.controller.Touch.*;
+
 
 /**
  *
  * @author Dayvson
  */
+
+
+
+
+
 public enum Controller implements IStrategy {
+
+
+
     PLAYER_1 {
         @Override
         public void keyPressed(Player player, KeyEvent key){
+
             int codigo = key.getKeyCode();
-            if (!player.isMorto()) {
+            if (!player.isDead()) {
                 switch(codigo){
-                    case KeyEvent.VK_G:
-                        player.atira();
+                    case PLAYER_ONE_FIRE:
+                        player.fire();
                         break;
-                    case KeyEvent.VK_W:
+                    case PLAYER_ONE_MOVE_UP:
                         player.setDy(-1);
                         break;
-                    case KeyEvent.VK_S:
+                    case PLAYER_ONE_MOVE_DOWN:
                         player.setDy(1);
                         break;
-                    case KeyEvent.VK_A:
+                    case PLAYER_ONE_MOVE_LEFT:
                         player.setDx(-1);
                         break;
-                    case KeyEvent.VK_D:
+                    case PLAYER_ONE_MOVE_RIGHT:
                         player.setDx(1);
                         break;
                 }
@@ -42,18 +55,19 @@ public enum Controller implements IStrategy {
         @Override
         public void keyReleased(Player player, KeyEvent key){
             int codigo = key.getKeyCode();
-            if (!player.isMorto()) {
+
+            if (!player.isDead()) {
                 switch(codigo){
-                    case KeyEvent.VK_W:
+                    case PLAYER_ONE_MOVE_UP:
                         player.setDy(0);
                         break;
-                    case KeyEvent.VK_S:
+                    case PLAYER_ONE_MOVE_DOWN:
                         player.setDy(0);
                         break;
-                    case KeyEvent.VK_A:
+                    case PLAYER_ONE_MOVE_LEFT:
                         player.setDx(0);
                         break;
-                    case KeyEvent.VK_D:
+                    case PLAYER_ONE_MOVE_RIGHT:
                         player.setDx(0);
                         break;
                 }
@@ -64,21 +78,21 @@ public enum Controller implements IStrategy {
         @Override
         public void keyPressed(Player player, KeyEvent key){
             int codigo = key.getKeyCode();
-            if (!player.isMorto()) {
+            if (!player.isDead()) {
                 switch(codigo){
-                    case KeyEvent.VK_INSERT:
-                        player.atira();
+                    case PLAYER_TWO_FIRE:
+                        player.fire();
                         break;
-                    case KeyEvent.VK_UP:
+                    case PLAYER_TWO_MOVE_UP:
                         player.setDy(-1);
                         break;
-                    case KeyEvent.VK_DOWN:
+                    case PLAYER_TWO_MOVE_DOWN:
                         player.setDy(1);
                         break;
-                    case KeyEvent.VK_LEFT:
+                    case PLAYER_TWO_MOVE_LEFT:
                         player.setDx(-1);
                         break;
-                    case KeyEvent.VK_RIGHT:
+                    case PLAYER_TWO_MOVE_RIGHT:
                         player.setDx(1);
                         break;
                 }
@@ -88,18 +102,18 @@ public enum Controller implements IStrategy {
         @Override
         public void keyReleased(Player player, KeyEvent key){
             int codigo = key.getKeyCode();
-            if (!player.isMorto()) {
+            if (!player.isDead()) {
                 switch(codigo){
-                    case KeyEvent.VK_UP:
+                    case PLAYER_TWO_MOVE_UP:
                         player.setDy(0);
                         break;
-                    case KeyEvent.VK_DOWN:
+                    case PLAYER_TWO_MOVE_DOWN:
                         player.setDy(0);
                         break;
-                    case KeyEvent.VK_LEFT:
+                    case PLAYER_TWO_MOVE_LEFT:
                         player.setDx(0);
                         break;
-                    case KeyEvent.VK_RIGHT:
+                    case PLAYER_TWO_MOVE_RIGHT:
                         player.setDx(0);
                         break;
                 }

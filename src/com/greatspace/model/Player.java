@@ -2,6 +2,7 @@ package com.greatspace.model;
 
 import com.greatspace.controller.Controller;
 import com.greatspace.proxy.ProxyImage;
+
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,27 +21,27 @@ public class Player extends GameObject {
     private boolean morto;
     private static ProxyImage imagemProxy;
     private Bullet missel;
-    
+
     private Controller controle;
 
-    private List<Bullet> misseis;
+    private List<Bullet> bullets;
 
     public Player() {
-        if(imagemProxy == null)
-            imagemProxy = new ProxyImage("/com/greatspace/sprites/ship.gif"); 
-        
+        if (imagemProxy == null)
+            imagemProxy = new ProxyImage("/com/greatspace/sprites/ship.gif");
+
         this.setImagem(imagemProxy.loadImage().getImage());
 
-        this.setAltura(getImagem().getHeight(null));
-        this.setLargura(getImagem().getWidth(null));
+        this.setHeight(getImagem().getHeight(null));
+        this.setWidth(getImagem().getWidth(null));
 
-        misseis = new ArrayList<Bullet>();
+        bullets = new ArrayList<Bullet>();
         missel = new Bullet();
     }
 
     public void mexer() {
-        x += dx; // 1 e 462
-        y += dy; // 1 e 340
+        x += dx*2; // 1 e 462
+        y += dy*2; // 1 e 340
 
         colisaoJanela();
     }
@@ -64,8 +65,8 @@ public class Player extends GameObject {
         }
     }
 
-    public List<Bullet> getMisseis() {
-        return misseis;
+    public List<Bullet> getBullet() {
+        return bullets;
     }
 
     public int getX() {
@@ -75,10 +76,12 @@ public class Player extends GameObject {
     public void setX(int x) {
         this.x = x;
     }
-    public void setDx(int d){
+
+    public void setDx(int d) {
         this.dx = d;
     }
-    public void setDy(int d){
+
+    public void setDy(int d) {
         this.dy = d;
     }
 
@@ -91,7 +94,7 @@ public class Player extends GameObject {
         this.y = num;
     }
 
-    public boolean isMorto() {
+    public boolean isDead() {
         return morto;
     }
 
@@ -99,12 +102,12 @@ public class Player extends GameObject {
         this.morto = morto;
     }
 
-    public void atira() {
+    public void fire() {
         Bullet mis = (Bullet) missel.clone();
         mis.setX(x + getLargura());
-        mis.setY(y + getAltura()/2);
-        
-        this.misseis.add(mis);
+        mis.setY(y + getAltura() / 2);
+
+        this.bullets.add(mis);
     }
 
     public Rectangle getBounds() {
@@ -118,5 +121,5 @@ public class Player extends GameObject {
     public void setControle(Controller controle) {
         this.controle = controle;
     }
-    
+
 }

@@ -39,15 +39,15 @@ public class Game extends JPanel implements ActionListener {
     private Image Inicio;
     private final Player nave;
     private final Timer timer;
-    private final Player naveUm;
-    private final Player naveDois;
+    private final Player playeOne;
+    private final Player playerTwo;
 
     private boolean p2 = false;
     private boolean emJogo;
-    private boolean inicio;
+    private boolean begin;
     private boolean ganhoJogo;
 
-    private List<Enemy> inimigos;
+    private List<Enemy> enemies;
 
     public Game() {
 
@@ -60,19 +60,19 @@ public class Game extends JPanel implements ActionListener {
         ImageIcon referencia = new ImageIcon(getClass().getResource("/com/greatspace/sprites/background.png"));
         fundo = referencia.getImage();
 
-        naveUm = (Player) nave.clone();
-        naveUm.setX(100);
-        naveUm.setY(100);
-        naveUm.setControle(Controller.PLAYER_1);
+        playeOne = (Player) nave.clone();
+        playeOne.setX(100);
+        playeOne.setY(100);
+        playeOne.setControle(Controller.PLAYER_1);
 
-        naveDois = (Player) nave.clone();
-        naveDois.setX(100);
-        naveDois.setY(200);
-        naveDois.setControle(Controller.PLAYER_2);
+        playerTwo = (Player) nave.clone();
+        playerTwo.setX(100);
+        playerTwo.setY(200);
+        playerTwo.setControle(Controller.PLAYER_2);
 
         emJogo = false;
         ganhoJogo = false;
-        inicio = true;
+        begin = true;
 
         initEnemy();
 
@@ -123,10 +123,10 @@ public class Game extends JPanel implements ActionListener {
         htp.addActionListener((ActionEvent e) -> {
             JOptionPane.showMessageDialog(null, "<html>"
                     + "<strong>Player 1</strong><br>"
-                    + "Fire - <strong>G</strong><br>"
-                    + "Up - <strong>W</strong><br>"
+                    + "Fire - <strong>Space</strong><br>"
+                    + "Up - <strong>Z</strong><br>"
                     + "Down - <strong>S</strong><br>"
-                    + "Left - <strong>A</strong><br>"
+                    + "Left - <strong>Q</strong><br>"
                     + "Right - <strong>D</strong><br><br>"
                     + "<strong>Player 2</strong><br>"
                     + "Fire - <strong>Insert</strong><br>"
@@ -147,14 +147,15 @@ public class Game extends JPanel implements ActionListener {
     }
 
     private void initEnemy() {
-        inimigos = new ArrayList<>();
-        Enemy inimigo = new Enemy();
+        enemies = new ArrayList<>();
+        Enemy enemy = new Enemy();
         ProxyImage imagemInimigoUm = new ProxyImage("/com/greatspace/sprites/enemy_1.gif");
         ProxyImage imagemInimigoDois = new ProxyImage("/com/greatspace/sprites/enemy_2.gif");
+
         for (int i = 0; i < 100; i++) {
-            Enemy ini = (Enemy) inimigo.clone();
-            ini.setX(Enemy.GerarPosX());
-            ini.setY(Enemy.GerarPosY());
+            Enemy ini = (Enemy) enemy.clone();
+            ini.setX(Enemy.GeneratePosX());
+            ini.setY(Enemy.GeneratePosY());
 
             if (i % 3 == 0) {
                 ini.setImagem(imagemInimigoDois.loadImage().getImage());
@@ -162,11 +163,11 @@ public class Game extends JPanel implements ActionListener {
                 ini.setImagem(imagemInimigoUm.loadImage().getImage());
             }
 
-            ini.setAltura(ini.getImagem().getHeight(null));
-            ini.setLargura(ini.getImagem().getWidth(null));
+            ini.setHeight(ini.getImagem().getHeight(null));
+            ini.setWidth(ini.getImagem().getWidth(null));
 
-            ini.setVisivel(true);
-            inimigos.add(ini);
+            ini.setVisibility(true);
+            enemies.add(ini);
         }
     }
 
@@ -178,19 +179,19 @@ public class Game extends JPanel implements ActionListener {
 
         if (emJogo) {
 
-            if (naveUm.isMorto() == false) {
-                graficos.drawImage(naveUm.getImagem(), naveUm.getX(), naveUm.getY(), this);
+            if (playeOne.isDead() == false) {
+                graficos.drawImage(playeOne.getImagem(), playeOne.getX(), playeOne.getY(), this);
             }
             if (p2 == true) {
-                if (naveDois.isMorto() == false) {
+                if (playerTwo.isDead() == false) {
                     ImageIcon naveDois_ = new ImageIcon(getClass().getResource("/com/greatspace/sprites/ship2.gif"));
-                    naveDois.setImagem(naveDois_.getImage());
-                    graficos.drawImage(naveDois.getImagem(), naveDois.getX(), naveDois.getY(), this);
+                    playerTwo.setImagem(naveDois_.getImage());
+                    graficos.drawImage(playerTwo.getImagem(), playerTwo.getX(), playerTwo.getY(), this);
                 }
             }
 
-            List<Bullet> misseis1 = naveUm.getMisseis();
-            List<Bullet> misseis2 = naveDois.getMisseis();
+            List<Bullet> misseis1 = playeOne.getBullet();
+            List<Bullet> misseis2 = playerTwo.getBullet();
 
             for (int i = 0; i < misseis1.size(); i++) {
 
@@ -205,15 +206,15 @@ public class Game extends JPanel implements ActionListener {
 
             }
 
-            for (int i = 0; i < inimigos.size(); i++) {
+            for (int i = 0; i < enemies.size(); i++) {
 
-                Enemy in = inimigos.get(i);
+                Enemy in = enemies.get(i);
                 graficos.drawImage(in.getImagem(), in.getX(), in.getY(), this);
 
             }
 
             graficos.setColor(Color.WHITE);
-            graficos.drawString("Enemies: " + inimigos.size(), 5, 15);
+            graficos.drawString("Enemies: " + enemies.size(), 5, 15);
 
         } else if (ganhoJogo) {
 
@@ -221,7 +222,7 @@ public class Game extends JPanel implements ActionListener {
 
             graficos.drawImage(ganhojogo.getImage(), 0, 0, null);
 
-        } else if (inicio) {
+        } else if (begin) {
 
             ImageIcon bg_ = new ImageIcon(getClass().getResource("/com/greatspace/sprites/main_menu.png"));
             Inicio = bg_.getImage();
@@ -240,19 +241,24 @@ public class Game extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent arg0) {
 
-        if (inimigos.isEmpty()) {
+        try {
+            Thread.sleep(5);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (enemies.isEmpty()) {
             emJogo = false;
             ganhoJogo = true;
         }
 
-        List<Bullet> misseis1 = naveUm.getMisseis();
-        List<Bullet> misseis2 = naveDois.getMisseis();
+        List<Bullet> misseis1 = playeOne.getBullet();
+        List<Bullet> misseis2 = playerTwo.getBullet();
 
         for (int i = 0; i < misseis1.size(); i++) {
 
             Bullet m = (Bullet) misseis1.get(i);
 
-            if (m.isVisivel()) {
+            if (m.isVisible()) {
                 m.mexer();
             } else {
                 misseis1.remove(i);
@@ -263,7 +269,7 @@ public class Game extends JPanel implements ActionListener {
 
             Bullet m = (Bullet) misseis2.get(i);
 
-            if (m.isVisivel()) {
+            if (m.isVisible()) {
                 m.mexer();
             } else {
                 misseis2.remove(i);
@@ -271,23 +277,25 @@ public class Game extends JPanel implements ActionListener {
 
         }
 
-        for (int i = 0; i < inimigos.size(); i++) {
+        for (int i = 0; i < enemies.size(); i++) {
 
-            Enemy in = inimigos.get(i);
+            Enemy in = enemies.get(i);
 
-            if (in.isVisivel()) {
-                in.mexer();
+            if (in.isVisible()) {
+                in.move(enemies.size());
             } else {
-                inimigos.remove(i);
+                enemies.remove(i);
             }
 
         }
 
-        naveUm.mexer();
-        naveDois.mexer();
-        checarColisoes();
+
+
+        playeOne.mexer();
+        playerTwo.mexer();
+        findCollision();
         if (p2 == true) {
-            if (naveUm.isMorto() && naveDois.isMorto()) {
+            if (playeOne.isDead() && playerTwo.isDead()) {
 
                 emJogo = false;
 
@@ -296,88 +304,88 @@ public class Game extends JPanel implements ActionListener {
         repaint();
     }
 
-    public void checarColisoes() {
+    public void findCollision() {
 
-        Rectangle formaNave1 = naveUm.getBounds();
-        Rectangle formaNave2 = naveDois.getBounds();
+        Rectangle formaNave1 = playeOne.getBounds();
+        Rectangle formaNave2 = playerTwo.getBounds();
         Rectangle formaInimigo;
         Rectangle formaMissel;
 
-        for (int i = 0; i < inimigos.size(); i++) {
+        for (int i = 0; i < enemies.size(); i++) {
 
-            Enemy tempInimigo = inimigos.get(i);
+            Enemy tempInimigo = enemies.get(i);
             formaInimigo = tempInimigo.getBounds();
 
             if (formaNave1.intersects(formaInimigo)) {
-                naveUm.setVisivel(false);
-                naveUm.setMorto(true);
+                playeOne.setVisibility(false);
+                playeOne.setMorto(true);
                 if (p2 == false) {
                     emJogo = false;
                 }
             }
             if (formaNave2.intersects(formaInimigo)) {
-                naveDois.setVisivel(false);
-                naveDois.setMorto(true);
+                playerTwo.setVisibility(false);
+                playerTwo.setMorto(true);
             }
-            if (naveUm.isMorto() == false && naveDois.isMorto() == false) {
+            if (playeOne.isDead() == false && playerTwo.isDead() == false) {
                 if (formaNave1.intersects(formaNave2)) {
-                    naveUm.setDx(0);
-                    naveUm.setDy(0);
+                    playeOne.setDx(0);
+                    playeOne.setDy(0);
                 }
                 if (formaNave2.intersects(formaNave1)) {
-                    naveDois.setDx(0);
-                    naveDois.setDy(0);
+                    playerTwo.setDx(0);
+                    playerTwo.setDy(0);
                 }
             }
 
         }
 
-        List<Bullet> misseis1 = naveUm.getMisseis();
-        List<Bullet> misseis2 = naveDois.getMisseis();
+        List<Bullet> bulletsOne = playeOne.getBullet();
+        List<Bullet> bulletsTwo = playerTwo.getBullet();
 
-        for (int i = 0; i < misseis1.size(); i++) {
+        for (int i = 0; i < bulletsOne.size(); i++) {
 
-            Bullet tempMissel = misseis1.get(i);
+            Bullet tempMissel = bulletsOne.get(i);
             formaMissel = tempMissel.getBounds();
 
-            for (int j = 0; j < inimigos.size(); j++) {
+            for (int j = 0; j < enemies.size(); j++) {
 
-                Enemy tempInimigo = inimigos.get(j);
+                Enemy tempInimigo = enemies.get(j);
                 formaInimigo = tempInimigo.getBounds();
 
                 if (formaMissel.intersects(formaInimigo)) {
 
-                    tempInimigo.setVisivel(false);
-                    tempMissel.setVisivel(false);
+                    tempInimigo.setVisibility(false);
+                    tempMissel.setVisibility(false);
 
                 }
                 if (formaMissel.intersects(formaNave2)) {
 
-                    tempMissel.setVisivel(false);
+                    tempMissel.setVisibility(false);
                 }
 
             }
 
         }
-        for (int i = 0; i < misseis2.size(); i++) {
+        for (int i = 0; i < bulletsTwo.size(); i++) {
 
-            Bullet tempMissel = misseis2.get(i);
+            Bullet tempMissel = bulletsTwo.get(i);
             formaMissel = tempMissel.getBounds();
 
-            for (int j = 0; j < inimigos.size(); j++) {
+            for (int j = 0; j < enemies.size(); j++) {
 
-                Enemy tempInimigo = inimigos.get(j);
+                Enemy tempInimigo = enemies.get(j);
                 formaInimigo = tempInimigo.getBounds();
 
                 if (formaMissel.intersects(formaInimigo)) {
 
-                    tempInimigo.setVisivel(false);
-                    tempMissel.setVisivel(false);
+                    tempInimigo.setVisibility(false);
+                    tempMissel.setVisibility(false);
 
                 }
                 if (formaMissel.intersects(formaNave1)) {
 
-                    tempMissel.setVisivel(false);
+                    tempMissel.setVisibility(false);
                 }
 
             }
@@ -396,18 +404,18 @@ public class Game extends JPanel implements ActionListener {
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                 if (emJogo == false) {
                     emJogo = true;
-                    naveUm.setMorto(false);
-                    naveDois.setMorto(false);
+                    playeOne.setMorto(false);
+                    playerTwo.setMorto(false);
                     ganhoJogo = false;
-                    if (inicio == true) {
-                        inicio = false;
+                    if (begin == true) {
+                        begin = false;
                     }
 
-                    naveUm.setX(100);
-                    naveUm.setY(100);
+                    playeOne.setX(100);
+                    playeOne.setY(100);
 
-                    naveDois.setX(100);
-                    naveDois.setY(200);
+                    playerTwo.setX(100);
+                    playerTwo.setY(200);
 
                     initEnemy();
                 }
@@ -416,17 +424,17 @@ public class Game extends JPanel implements ActionListener {
                 emJogo = false;
             }
 
-            naveUm.getControle().keyPressed(naveUm, e);
+            playeOne.getControle().keyPressed(playeOne, e);
             if (p2) {
-                naveDois.getControle().keyPressed(naveDois, e);
+                playerTwo.getControle().keyPressed(playerTwo, e);
             }
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            naveUm.getControle().keyPressed(naveUm, e);
+            playeOne.getControle().keyReleased(playeOne, e);
             if (p2) {
-                naveDois.getControle().keyPressed(naveDois, e);
+                playerTwo.getControle().keyReleased(playerTwo, e);
             }
         }
 
