@@ -23,17 +23,17 @@ public class Bullet extends GameObject {
             imagemProxy = new ProxyImage("/com/greatspace/sprites/bullet.png"); 
         
         this.setImagem(imagemProxy.loadImage().getImage());
-        this.setAltura(getImagem().getHeight(null));
-        this.setLargura(getImagem().getWidth(null));
+        this.setHeight(getImagem().getHeight(null));
+        this.setWidth(getImagem().getWidth(null));
 
-        this.setVisivel(true);
+        this.setVisibility(true);
     }
 
     public void mexer() {
 
         this.x += VELOCIDADE;
         if (this.x > LARGURA_TELA) {
-            setVisivel(false);
+            setVisibility(false);
         }
 
     }

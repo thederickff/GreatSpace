@@ -1,9 +1,6 @@
 package com.greatspace.model;
 
-import java.awt.Image;
 import java.awt.Rectangle;
-
-import javax.swing.ImageIcon;
 
 /**
  * PROGRAMA DESENVOLVIDO POR DERICK FELIX.
@@ -17,27 +14,34 @@ public class Enemy extends GameObject {
     private int y;
 
     private static final int LARGURA_TELA = 500;
-    private static final int VELOCIDADE = 1;
+    private static final int VELOCIDADE = 2;
 
     public Enemy() {
     }
 
-    public static int GerarPosX() {
+    public static int GeneratePosX() {
+        return GeneratePosX(100);
+    }
 
-        int aax = 456 + (int) (Math.random() * 1600);
+    public static int GeneratePosX(int nb) {
+
+        int aax = 456 + (int) (Math.random() * 16 * nb );
         return aax;
     }
 
-    public static int GerarPosY() {
+    public static int GeneratePosY() {
         int aay = 10 + (int) (Math.random() * 320);
 
         return aay;
     }
 
-    public void mexer() {
+    public void move() {
+        move(100);
+    }
+    public void move(int nbEnemy) {
         if (this.x < 0) {
-            this.x = GerarPosX();
-            this.y = GerarPosY();
+            this.x = GeneratePosX(nbEnemy);
+            this.y = GeneratePosY();
         } else {
             this.x -= VELOCIDADE;
         }
