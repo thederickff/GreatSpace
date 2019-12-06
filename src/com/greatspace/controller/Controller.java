@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.greatspace.controller;
 
 import com.greatspace.interfaces.IStrategy;
@@ -12,27 +7,20 @@ import java.awt.event.KeyEvent;
 
 import static com.greatspace.controller.Touch.*;
 
-
 /**
  *
  * @author Dayvson
  */
-
-
-
-
-
 public enum Controller implements IStrategy {
-
-
 
     PLAYER_1 {
         @Override
-        public void keyPressed(Player player, KeyEvent key){
+        public void keyPressed(Player player, KeyEvent key)
+        {
 
             int codigo = key.getKeyCode();
             if (!player.isDead()) {
-                switch(codigo){
+                switch (codigo) {
                     case PLAYER_ONE_FIRE:
                         player.fire();
                         break;
@@ -51,13 +39,14 @@ public enum Controller implements IStrategy {
                 }
             }
         }
-        
+
         @Override
-        public void keyReleased(Player player, KeyEvent key){
+        public void keyReleased(Player player, KeyEvent key)
+        {
             int codigo = key.getKeyCode();
 
             if (!player.isDead()) {
-                switch(codigo){
+                switch (codigo) {
                     case PLAYER_ONE_MOVE_UP:
                         player.setDy(0);
                         break;
@@ -76,10 +65,11 @@ public enum Controller implements IStrategy {
     },
     PLAYER_2 {
         @Override
-        public void keyPressed(Player player, KeyEvent key){
+        public void keyPressed(Player player, KeyEvent key)
+        {
             int codigo = key.getKeyCode();
             if (!player.isDead()) {
-                switch(codigo){
+                switch (codigo) {
                     case PLAYER_TWO_FIRE:
                         player.fire();
                         break;
@@ -98,12 +88,13 @@ public enum Controller implements IStrategy {
                 }
             }
         }
-        
+
         @Override
-        public void keyReleased(Player player, KeyEvent key){
+        public void keyReleased(Player player, KeyEvent key)
+        {
             int codigo = key.getKeyCode();
             if (!player.isDead()) {
-                switch(codigo){
+                switch (codigo) {
                     case PLAYER_TWO_MOVE_UP:
                         player.setDy(0);
                         break;

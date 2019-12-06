@@ -1,72 +1,71 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.greatspace.model;
 
 import java.awt.Image;
 
 /**
- * PROGRAMA DESENVOLVIDO POR DERICK FELIX.
- * DATA:13/02/2016
- * VERSAO: 2.1
- * CLASSE: DESENHO 
- * OBJETIVO: CRIA OS ATRIBUTOS DE TODAS AS CLASSES
+ * Date: 13/02/2016
  */
 public abstract class GameObject implements Cloneable {
 
-    private Image imagem;
-    private int x;
-    private int y;
-    private int altura;
-    private int largura;
+    private Image image;
+    private int height;
+    private int width;
 
     private boolean visivel;
 
-    public int getAltura() {
-        return altura;
+    public int getAltura()
+    {
+        return height;
     }
 
-    public void setHeight(int a) {
-        this.altura = a;
+    public void setHeight(int a)
+    {
+        this.height = a;
     }
 
-    public int getLargura() {
-        return largura;
+    public int getLargura()
+    {
+        return width;
     }
 
-    public void setWidth(int l) {
+    public void setWidth(int l)
+    {
 
-        this.largura = l;
+        this.width = l;
     }
 
-    public Image getImagem() {
-        return imagem;
+    public Image getImage()
+    {
+        return image;
     }
 
-    public void setImagem(Image i) {
-        this.imagem = i;
+    public void setImage(Image i)
+    {
+        this.image = i;
     }
 
-    public boolean isVisible() {
+    public boolean isVisible()
+    {
         return visivel;
     }
 
-    public void setVisibility(boolean v) {
+    public void setVisibility(boolean v)
+    {
         this.visivel = v;
     }
 
-    public Object clone() {
-      Object clone = null;
-      
-      try {
-         clone = super.clone();
-         
-      } catch (CloneNotSupportedException e) {
-         e.printStackTrace();
-      }
-      
-      return clone;
-   }
+    @Override
+    public Object clone()
+    {
+        Object clone = null;
+
+        try {
+            clone = super.clone();
+
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+
+        return clone;
+    }
 }

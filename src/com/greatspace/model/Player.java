@@ -9,10 +9,7 @@ import java.util.List;
 
 
 /**
- * @author: Derick Felix
- * @Data: 02/13/2016
- * @Release: 2.1
- * @Class: Player
+ * Date: 13/02/2016
  */
 public class Player extends GameObject {
 
@@ -30,10 +27,10 @@ public class Player extends GameObject {
         if (imagemProxy == null)
             imagemProxy = new ProxyImage("/com/greatspace/sprites/ship.gif");
 
-        this.setImagem(imagemProxy.loadImage().getImage());
+        this.setImage(imagemProxy.loadImage().getImage());
 
-        this.setHeight(getImagem().getHeight(null));
-        this.setWidth(getImagem().getWidth(null));
+        this.setHeight(getImage().getHeight(null));
+        this.setWidth(getImage().getWidth(null));
 
         bullets = new ArrayList<Bullet>();
         missel = new Bullet();

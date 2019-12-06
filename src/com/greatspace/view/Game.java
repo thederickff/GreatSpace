@@ -26,16 +26,12 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 /**
- * @author: Derick Felix
- * @Data: 02/13/2016
- * @Release: 2.1
- * @Class: Game
- * @Objective: Control the game
+ * Date: 13/02/2016
  */
 public class Game extends JPanel implements ActionListener {
 
     private int recp;
-    private final Image fundo;
+    private final Image background;
     private Image Inicio;
     private final Player nave;
     private final Timer timer;
@@ -43,13 +39,14 @@ public class Game extends JPanel implements ActionListener {
     private final Player playerTwo;
 
     private boolean p2 = false;
-    private boolean emJogo;
+    private boolean playing;
     private boolean begin;
-    private boolean ganhoJogo;
+    private boolean isWon;
 
     private List<Enemy> enemies;
 
-    public Game() {
+    public Game()
+    {
 
         this.nave = new Player();
 
@@ -58,7 +55,7 @@ public class Game extends JPanel implements ActionListener {
         addKeyListener(new TecladoAdapter());
 
         ImageIcon referencia = new ImageIcon(getClass().getResource("/com/greatspace/sprites/background.png"));
-        fundo = referencia.getImage();
+        background = referencia.getImage();
 
         playeOne = (Player) nave.clone();
         playeOne.setX(100);
@@ -70,8 +67,8 @@ public class Game extends JPanel implements ActionListener {
         playerTwo.setY(200);
         playerTwo.setControle(Controller.PLAYER_2);
 
-        emJogo = false;
-        ganhoJogo = false;
+        playing = false;
+        isWon = false;
         begin = true;
 
         initEnemy();
@@ -80,7 +77,8 @@ public class Game extends JPanel implements ActionListener {
         timer.start();
     }
 
-    public void checkPlayer() {
+    public void checkPlayer()
+    {
         try {
             recp = Integer.parseInt(JOptionPane.showInputDialog(null, "<html>Type 1 to Singleplayer<br>"
                     + "Type 2 to Multiplayer</html>", "Game type", 1));
@@ -95,7 +93,8 @@ public class Game extends JPanel implements ActionListener {
 
     }
 
-    public JMenuBar criarMenu() {
+    public JMenuBar criarMenu()
+    {
         // Create a new MenuBar
         JMenuBar menub = new JMenuBar();
         // Create a new Menu
@@ -111,7 +110,7 @@ public class Game extends JPanel implements ActionListener {
         JMenu help = new JMenu("Help");
 
         JMenuItem about = new JMenuItem("About");
-        about.addActionListener((ActionEvent e) -> {
+        about.addActionListener((e) -> {
             JOptionPane.showMessageDialog(null, "<html><strong>Great Space</strong><br> "
                     + "Developed by <strong>Derick Felix</strong>!<br><br>"
                     + "<strong>What's new:</strong><br><br>"
@@ -120,13 +119,13 @@ public class Game extends JPanel implements ActionListener {
                     + "<br></html>", "About", 1);
         });
         JMenuItem htp = new JMenuItem("How to Play");
-        htp.addActionListener((ActionEvent e) -> {
+        htp.addActionListener((e) -> {
             JOptionPane.showMessageDialog(null, "<html>"
                     + "<strong>Player 1</strong><br>"
                     + "Fire - <strong>Space</strong><br>"
-                    + "Up - <strong>Z</strong><br>"
+                    + "Up - <strong>W</strong><br>"
                     + "Down - <strong>S</strong><br>"
-                    + "Left - <strong>Q</strong><br>"
+                    + "Left - <strong>A</strong><br>"
                     + "Right - <strong>D</strong><br><br>"
                     + "<strong>Player 2</strong><br>"
                     + "Fire - <strong>Insert</strong><br>"
@@ -136,21 +135,23 @@ public class Game extends JPanel implements ActionListener {
                     + "Right - <strong>RIGHT ARROW</strong><br>"
                     + "</html>", "How to play", JOptionPane.QUESTION_MESSAGE);
         });
-        // Add coj and sobre menu item to ajuda menu
+
         help.add(htp);
         help.add(about);
-        // Add jogo and ajuda menu to the Menu Bar
+
         menub.add(game);
         menub.add(help);
-        // Return the menu bar
+
         return menub;
     }
 
-    private void initEnemy() {
+    private void initEnemy()
+    {
         enemies = new ArrayList<>();
         Enemy enemy = new Enemy();
-        ProxyImage imagemInimigoUm = new ProxyImage("/com/greatspace/sprites/enemy_1.gif");
-        ProxyImage imagemInimigoDois = new ProxyImage("/com/greatspace/sprites/enemy_2.gif");
+
+        ProxyImage enemyOneImage = new ProxyImage("/com/greatspace/sprites/enemy_1.gif");
+        ProxyImage enemyTwoImage = new ProxyImage("/com/greatspace/sprites/enemy_2.gif");
 
         for (int i = 0; i < 100; i++) {
             Enemy ini = (Enemy) enemy.clone();
@@ -158,13 +159,13 @@ public class Game extends JPanel implements ActionListener {
             ini.setY(Enemy.GeneratePosY());
 
             if (i % 3 == 0) {
-                ini.setImagem(imagemInimigoDois.loadImage().getImage());
+                ini.setImage(enemyTwoImage.loadImage().getImage());
             } else {
-                ini.setImagem(imagemInimigoUm.loadImage().getImage());
+                ini.setImage(enemyOneImage.loadImage().getImage());
             }
 
-            ini.setHeight(ini.getImagem().getHeight(null));
-            ini.setWidth(ini.getImagem().getWidth(null));
+            ini.setHeight(ini.getImage().getHeight(null));
+            ini.setWidth(ini.getImage().getWidth(null));
 
             ini.setVisibility(true);
             enemies.add(ini);
@@ -172,55 +173,56 @@ public class Game extends JPanel implements ActionListener {
     }
 
     @Override
-    public void paint(Graphics g) {
+    public void paint(Graphics g)
+    {
 
         Graphics2D graficos = (Graphics2D) g;
-        graficos.drawImage(fundo, 0, 0, null);
+        graficos.drawImage(background, 0, 0, null);
 
-        if (emJogo) {
+        if (playing) {
 
             if (playeOne.isDead() == false) {
-                graficos.drawImage(playeOne.getImagem(), playeOne.getX(), playeOne.getY(), this);
+                graficos.drawImage(playeOne.getImage(), playeOne.getX(), playeOne.getY(), this);
             }
             if (p2 == true) {
                 if (playerTwo.isDead() == false) {
                     ImageIcon naveDois_ = new ImageIcon(getClass().getResource("/com/greatspace/sprites/ship2.gif"));
-                    playerTwo.setImagem(naveDois_.getImage());
-                    graficos.drawImage(playerTwo.getImagem(), playerTwo.getX(), playerTwo.getY(), this);
+                    playerTwo.setImage(naveDois_.getImage());
+                    graficos.drawImage(playerTwo.getImage(), playerTwo.getX(), playerTwo.getY(), this);
                 }
             }
 
-            List<Bullet> misseis1 = playeOne.getBullet();
-            List<Bullet> misseis2 = playerTwo.getBullet();
+            List<Bullet> bullets1 = playeOne.getBullet();
+            List<Bullet> bullets2 = playerTwo.getBullet();
 
-            for (int i = 0; i < misseis1.size(); i++) {
+            for (int i = 0; i < bullets1.size(); i++) {
 
-                Bullet m = (Bullet) misseis1.get(i);
-                graficos.drawImage(m.getImagem(), m.getX(), m.getY(), this);
+                Bullet m = (Bullet) bullets1.get(i);
+                graficos.drawImage(m.getImage(), m.getX(), m.getY(), this);
 
             }
-            for (int i = 0; i < misseis2.size(); i++) {
+            for (int i = 0; i < bullets2.size(); i++) {
 
-                Bullet m = (Bullet) misseis2.get(i);
-                graficos.drawImage(m.getImagem(), m.getX(), m.getY(), this);
+                Bullet m = (Bullet) bullets2.get(i);
+                graficos.drawImage(m.getImage(), m.getX(), m.getY(), this);
 
             }
 
             for (int i = 0; i < enemies.size(); i++) {
 
                 Enemy in = enemies.get(i);
-                graficos.drawImage(in.getImagem(), in.getX(), in.getY(), this);
+                graficos.drawImage(in.getImage(), in.getX(), in.getY(), this);
 
             }
 
             graficos.setColor(Color.WHITE);
             graficos.drawString("Enemies: " + enemies.size(), 5, 15);
 
-        } else if (ganhoJogo) {
+        } else if (isWon) {
 
-            ImageIcon ganhojogo = new ImageIcon(getClass().getResource("/com/greatspace/sprites/game_won.png"));
+            ImageIcon wonImage = new ImageIcon(getClass().getResource("/com/greatspace/sprites/game_won.png"));
 
-            graficos.drawImage(ganhojogo.getImage(), 0, 0, null);
+            graficos.drawImage(wonImage.getImage(), 0, 0, null);
 
         } else if (begin) {
 
@@ -239,7 +241,8 @@ public class Game extends JPanel implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent arg0) {
+    public void actionPerformed(ActionEvent arg0)
+    {
 
         try {
             Thread.sleep(5);
@@ -247,32 +250,32 @@ public class Game extends JPanel implements ActionListener {
             e.printStackTrace();
         }
         if (enemies.isEmpty()) {
-            emJogo = false;
-            ganhoJogo = true;
+            playing = false;
+            isWon = true;
         }
 
-        List<Bullet> misseis1 = playeOne.getBullet();
-        List<Bullet> misseis2 = playerTwo.getBullet();
+        List<Bullet> bullets1 = playeOne.getBullet();
+        List<Bullet> bullets2 = playerTwo.getBullet();
 
-        for (int i = 0; i < misseis1.size(); i++) {
+        for (int i = 0; i < bullets1.size(); i++) {
 
-            Bullet m = (Bullet) misseis1.get(i);
+            Bullet m = (Bullet) bullets1.get(i);
 
             if (m.isVisible()) {
                 m.mexer();
             } else {
-                misseis1.remove(i);
+                bullets1.remove(i);
             }
 
         }
-        for (int i = 0; i < misseis2.size(); i++) {
+        for (int i = 0; i < bullets2.size(); i++) {
 
-            Bullet m = (Bullet) misseis2.get(i);
+            Bullet m = (Bullet) bullets2.get(i);
 
             if (m.isVisible()) {
                 m.mexer();
             } else {
-                misseis2.remove(i);
+                bullets2.remove(i);
             }
 
         }
@@ -289,25 +292,22 @@ public class Game extends JPanel implements ActionListener {
 
         }
 
-
-
         playeOne.mexer();
         playerTwo.mexer();
         findCollision();
         if (p2 == true) {
             if (playeOne.isDead() && playerTwo.isDead()) {
-
-                emJogo = false;
-
+                playing = false;
             }
         }
         repaint();
     }
 
-    public void findCollision() {
+    public void findCollision()
+    {
 
-        Rectangle formaNave1 = playeOne.getBounds();
-        Rectangle formaNave2 = playerTwo.getBounds();
+        Rectangle p1Bounds = playeOne.getBounds();
+        Rectangle p2Bounds = playerTwo.getBounds();
         Rectangle formaInimigo;
         Rectangle formaMissel;
 
@@ -316,23 +316,23 @@ public class Game extends JPanel implements ActionListener {
             Enemy tempInimigo = enemies.get(i);
             formaInimigo = tempInimigo.getBounds();
 
-            if (formaNave1.intersects(formaInimigo)) {
+            if (p1Bounds.intersects(formaInimigo)) {
                 playeOne.setVisibility(false);
                 playeOne.setMorto(true);
                 if (p2 == false) {
-                    emJogo = false;
+                    playing = false;
                 }
             }
-            if (formaNave2.intersects(formaInimigo)) {
+            if (p2Bounds.intersects(formaInimigo)) {
                 playerTwo.setVisibility(false);
                 playerTwo.setMorto(true);
             }
             if (playeOne.isDead() == false && playerTwo.isDead() == false) {
-                if (formaNave1.intersects(formaNave2)) {
+                if (p1Bounds.intersects(p2Bounds)) {
                     playeOne.setDx(0);
                     playeOne.setDy(0);
                 }
-                if (formaNave2.intersects(formaNave1)) {
+                if (p2Bounds.intersects(p1Bounds)) {
                     playerTwo.setDx(0);
                     playerTwo.setDy(0);
                 }
@@ -359,7 +359,7 @@ public class Game extends JPanel implements ActionListener {
                     tempMissel.setVisibility(false);
 
                 }
-                if (formaMissel.intersects(formaNave2)) {
+                if (formaMissel.intersects(p2Bounds)) {
 
                     tempMissel.setVisibility(false);
                 }
@@ -383,7 +383,7 @@ public class Game extends JPanel implements ActionListener {
                     tempMissel.setVisibility(false);
 
                 }
-                if (formaMissel.intersects(formaNave1)) {
+                if (formaMissel.intersects(p1Bounds)) {
 
                     tempMissel.setVisibility(false);
                 }
@@ -393,20 +393,22 @@ public class Game extends JPanel implements ActionListener {
         }
     }
 
-    public boolean getP2() {
+    public boolean getP2()
+    {
         return this.p2;
     }
 
     private class TecladoAdapter extends KeyAdapter {
 
         @Override
-        public void keyPressed(KeyEvent e) {
+        public void keyPressed(KeyEvent e)
+        {
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                if (emJogo == false) {
-                    emJogo = true;
+                if (playing == false) {
+                    playing = true;
                     playeOne.setMorto(false);
                     playerTwo.setMorto(false);
-                    ganhoJogo = false;
+                    isWon = false;
                     if (begin == true) {
                         begin = false;
                     }
@@ -421,7 +423,7 @@ public class Game extends JPanel implements ActionListener {
                 }
             }
             if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                emJogo = false;
+                playing = false;
             }
 
             playeOne.getControle().keyPressed(playeOne, e);
@@ -431,7 +433,8 @@ public class Game extends JPanel implements ActionListener {
         }
 
         @Override
-        public void keyReleased(KeyEvent e) {
+        public void keyReleased(KeyEvent e)
+        {
             playeOne.getControle().keyReleased(playeOne, e);
             if (p2) {
                 playerTwo.getControle().keyReleased(playerTwo, e);

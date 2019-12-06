@@ -4,11 +4,7 @@ import com.greatspace.proxy.ProxyImage;
 import java.awt.Rectangle;
 
 /**
- * PROGRAMA DESENVOLVIDO POR DERICK FELIX.
- * DATA:13/02/2016
- * VERSAO: 2.1
- * CLASSE: MISSEL 
- * OBJETIVO: CRIAR OS ATRIBUTOS DOS MISSEIS
+ * Date: 13/02/2016
  */
 public class Bullet extends GameObject {
 
@@ -18,18 +14,21 @@ public class Bullet extends GameObject {
     private static final int LARGURA_TELA = 500;
     private static final int VELOCIDADE = 3;
 
-    public Bullet() {
-        if(imagemProxy == null)
-            imagemProxy = new ProxyImage("/com/greatspace/sprites/bullet.png"); 
-        
-        this.setImagem(imagemProxy.loadImage().getImage());
-        this.setHeight(getImagem().getHeight(null));
-        this.setWidth(getImagem().getWidth(null));
+    public Bullet()
+    {
+        if (imagemProxy == null) {
+            imagemProxy = new ProxyImage("/com/greatspace/sprites/bullet.png");
+        }
+
+        this.setImage(imagemProxy.loadImage().getImage());
+        this.setHeight(getImage().getHeight(null));
+        this.setWidth(getImage().getWidth(null));
 
         this.setVisibility(true);
     }
 
-    public void mexer() {
+    public void mexer()
+    {
 
         this.x += VELOCIDADE;
         if (this.x > LARGURA_TELA) {
@@ -38,23 +37,28 @@ public class Bullet extends GameObject {
 
     }
 
-    public void setX(int x) {
+    public void setX(int x)
+    {
         this.x = x;
     }
 
-    public void setY(int y) {
+    public void setY(int y)
+    {
         this.y = y;
     }
 
-    public int getX() {
+    public int getX()
+    {
         return x;
     }
 
-    public int getY() {
+    public int getY()
+    {
         return y;
     }
 
-    public Rectangle getBounds() {
+    public Rectangle getBounds()
+    {
         return new Rectangle(x, y, getLargura(), getAltura());
     }
 
