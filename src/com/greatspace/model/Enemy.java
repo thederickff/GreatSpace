@@ -24,13 +24,13 @@ public class Enemy extends GameObject {
     public static int GeneratePosX(int nb)
     {
 
-        int aax = 456 + (int) (Math.random() * 16 * nb);
+        int aax = ((int) (Math.random() * 1300) + 800) + (int) (Math.random() * 1266);
         return aax;
     }
 
     public static int GeneratePosY()
     {
-        int aay = 10 + (int) (Math.random() * 320);
+        int aay = 10 + (int) (Math.random() * 688);
 
         return aay;
     }
@@ -43,7 +43,7 @@ public class Enemy extends GameObject {
     public void move(int nbEnemy)
     {
         if (this.x < 0) {
-            this.x = GeneratePosX(nbEnemy);
+            this.x = GeneratePosX();
             this.y = GeneratePosY();
         } else {
             this.x -= VELOCIDADE;

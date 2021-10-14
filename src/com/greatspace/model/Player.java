@@ -49,16 +49,16 @@ public class Player extends GameObject {
             x = 1;
         }
 
-        if (this.x > 462) {
-            x = 462;
+        if (this.x > 1328) {
+            x = 1328;
         }
 
         if (this.y < 1) {
             y = 1;
         }
 
-        if (this.y > 340) {
-            y = 340;
+        if (this.y > 708) {
+            y = 708;
         }
     }
 

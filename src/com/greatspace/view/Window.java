@@ -23,7 +23,7 @@ public class Window {
         frame.add(f);
         frame.setJMenuBar(f.criarMenu());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 420);
+        frame.setSize(1366, 768);
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
 

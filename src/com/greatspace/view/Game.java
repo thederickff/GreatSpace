@@ -59,12 +59,12 @@ public class Game extends JPanel implements ActionListener {
 
         playeOne = (Player) nave.clone();
         playeOne.setX(100);
-        playeOne.setY(100);
+        playeOne.setY(400);
         playeOne.setControle(Controller.PLAYER_1);
 
         playerTwo = (Player) nave.clone();
         playerTwo.setX(100);
-        playerTwo.setY(200);
+        playerTwo.setY(600);
         playerTwo.setControle(Controller.PLAYER_2);
 
         playing = false;
@@ -152,16 +152,19 @@ public class Game extends JPanel implements ActionListener {
 
         ProxyImage enemyOneImage = new ProxyImage("/com/greatspace/sprites/enemy_1.gif");
         ProxyImage enemyTwoImage = new ProxyImage("/com/greatspace/sprites/enemy_2.gif");
+        ProxyImage enemyThreeImage = new ProxyImage("/com/greatspace/sprites/color_ball.gif");
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1000; i++) {
             Enemy ini = (Enemy) enemy.clone();
             ini.setX(Enemy.GeneratePosX());
             ini.setY(Enemy.GeneratePosY());
 
             if (i % 3 == 0) {
+                ini.setImage(enemyOneImage.loadImage().getImage());
+            } else if (i % 2 == 0) {
                 ini.setImage(enemyTwoImage.loadImage().getImage());
             } else {
-                ini.setImage(enemyOneImage.loadImage().getImage());
+                ini.setImage(enemyThreeImage.loadImage().getImage());
             }
 
             ini.setHeight(ini.getImage().getHeight(null));

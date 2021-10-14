@@ -11,8 +11,9 @@ public class Bullet extends GameObject {
     private int x;
     private int y;
     private static ProxyImage imagemProxy;
-    private static final int LARGURA_TELA = 500;
+    private static final int LARGURA_TELA = 1366;
     private static final int VELOCIDADE = 3;
+    private static int Y = 0;
 
     public Bullet()
     {
@@ -25,12 +26,25 @@ public class Bullet extends GameObject {
         this.setWidth(getImage().getWidth(null));
 
         this.setVisibility(true);
+
+        switch ((int) (Math.random() * 3)) {
+          case 1:
+            Y = 1;
+            break;
+          case 2:
+            Y = -1;
+            break;
+        }
+        System.out.println(Y);
+
     }
 
     public void mexer()
     {
 
         this.x += VELOCIDADE;
+        this.y += Y;
+
         if (this.x > LARGURA_TELA) {
             setVisibility(false);
         }
